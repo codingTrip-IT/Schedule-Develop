@@ -52,7 +52,14 @@ public class MemberService {
         return new MemberResponseDto(findMember.getId(),findMember.getName(),findMember.getEmail());
     }
 
+    @Transactional
+    public void updateNameEmail(Long id, String name, String email) {
 
-//    @Transactional
+        Member findMember = memberRepository.findByIdOrElseThrow(id);
+
+        findMember.updateNameEmail(name,email);
+    }
+
+
 //    @Transactional
 }

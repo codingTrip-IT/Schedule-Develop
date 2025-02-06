@@ -4,6 +4,7 @@ import com.example.scheduledevelop.application.service.MemberService;
 import com.example.scheduledevelop.presentation.dto.CreateMemberRequestDto;
 import com.example.scheduledevelop.presentation.dto.CreateMemberResponseDto;
 import com.example.scheduledevelop.presentation.dto.MemberResponseDto;
+import com.example.scheduledevelop.presentation.dto.UpdateNameEmailRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,16 @@ public class MemberController {
     public ResponseEntity<MemberResponseDto> findById(@PathVariable("memberId") Long id){
         MemberResponseDto memberResponseDto = memberService.findById(id);
         return new ResponseEntity<>(memberResponseDto,HttpStatus.OK);
+    }
+
+    @PatchMapping("/{memberId}")
+    public ResponseEntity<Void> updateNameEmail(
+            @PathVariable("memberId") Long id,
+            @RequestBody UpdateNameEmailRequestDto requestDto){
+
+        memberService.updateNameEmail(id,requestDto.getName(),requestDto.getEmail());
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
