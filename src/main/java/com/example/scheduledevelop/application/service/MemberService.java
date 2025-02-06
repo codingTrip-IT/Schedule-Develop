@@ -60,6 +60,12 @@ public class MemberService {
         findMember.updateNameEmail(name,email);
     }
 
+    @Transactional
+    public void delete(Long id) {
 
-//    @Transactional
+        Member findMember = memberRepository.findByIdOrElseThrow(id);
+
+        memberRepository.delete(findMember);
+    }
+
 }

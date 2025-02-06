@@ -52,4 +52,11 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @DeleteMapping("/{memberId}")
+    public ResponseEntity<Void> delete(@PathVariable("memberId") Long id){
+        memberService.delete(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
