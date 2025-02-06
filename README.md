@@ -1,7 +1,7 @@
-## 👉🏼 일정관리(Schedule) 개인과제
+## 👉🏼 일정관리(Schedule) Develop 개인과제
 
-### 🙋‍♀️ 일정관리(Schedule) 과제 설명
-- **일정관리(Schedule) 과제**는 **<u>Spring을 활용하여 일정 관리 앱을 구현</u>**한 과제입니다.
+### 🙋‍♀️ 일정관리(Schedule) Develop 과제 설명
+- **일정관리(Schedule) Develop 과제**는 **<u>Spring을 활용하여 일정 관리 앱 Develop한 버전으로 구현</u>**한 과제입니다.
 - **작성자 : 조예인**
 
 

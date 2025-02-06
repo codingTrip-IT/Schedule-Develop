@@ -12,3 +12,5 @@ CREATE TABLE schedule (
           created_at TIMESTAMP NOT NULL,
           modified_at TIMESTAMP NOT NULL
 );
+
+select * from schedule;
