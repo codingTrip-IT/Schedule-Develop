@@ -3,6 +3,7 @@ package com.example.scheduledevelop.presentation.controller;
 import com.example.scheduledevelop.application.service.ScheduleService;
 import com.example.scheduledevelop.presentation.dto.CreateScheduleRequestDto;
 import com.example.scheduledevelop.presentation.dto.ScheduleResponseDto;
+import com.example.scheduledevelop.presentation.dto.UpdateTitleContentsRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -19,27 +20,38 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping
-    public ResponseEntity<ScheduleResponseDto> save(@RequestBody CreateScheduleRequestDto requestDto){
+    public ResponseEntity<ScheduleResponseDto> save(@RequestBody CreateScheduleRequestDto requestDto) {
 
         ScheduleResponseDto scheduleResponseDto
-                 = scheduleService.save(requestDto.getUsername(),requestDto.getTitle(),requestDto.getContents());
+                = scheduleService.save(requestDto.getUsername(), requestDto.getTitle(), requestDto.getContents());
 
         return new ResponseEntity<>(scheduleResponseDto, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<ScheduleResponseDto>> findAll(){
+    public ResponseEntity<List<ScheduleResponseDto>> findAll() {
 
         List<ScheduleResponseDto> scheduleResponseDtoList = scheduleService.findAll();
 
-        return new ResponseEntity<>(scheduleResponseDtoList,HttpStatus.OK);
+        return new ResponseEntity<>(scheduleResponseDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/{scheduleId}")
-    public ResponseEntity<ScheduleResponseDto> findById(@PathVariable("scheduleId") Long id){
+    public ResponseEntity<ScheduleResponseDto> findById(@PathVariable("scheduleId") Long id) {
 
         ScheduleResponseDto scheduleResponseDto = scheduleService.findById(id);
 
-        return new ResponseEntity<>(scheduleResponseDto,HttpStatus.OK);
+        return new ResponseEntity<>(scheduleResponseDto, HttpStatus.OK);
     }
+
+    @PatchMapping("/{scheduleId}")
+    public ResponseEntity<Void> updateTitleContents(
+            @PathVariable("scheduleId") Long id,
+            @RequestBody UpdateTitleContentsRequestDto requestDto
+    ) {
+        scheduleService.updateTitleContents(id, requestDto.getTitle(), requestDto.getContents());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

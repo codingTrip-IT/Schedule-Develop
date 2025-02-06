@@ -13,4 +13,6 @@ CREATE TABLE schedule (
           modified_at TIMESTAMP NOT NULL
 );
 
+
+
 select * from schedule;
