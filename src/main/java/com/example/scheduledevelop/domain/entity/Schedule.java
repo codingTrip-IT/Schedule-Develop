@@ -2,6 +2,7 @@ package com.example.scheduledevelop.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Entity
@@ -20,6 +21,11 @@ public class Schedule extends BaseEntity{
 
     @Column(nullable = false, columnDefinition = "longtext")
     private String contents;
+
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     public Schedule() {
     }

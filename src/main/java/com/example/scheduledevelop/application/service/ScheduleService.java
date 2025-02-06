@@ -60,6 +60,7 @@ public class ScheduleService {
         findSchedule.updateTitleContents(title, contents);
     }
 
+    @Transactional
     public void delete(Long id) {
 
         Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
