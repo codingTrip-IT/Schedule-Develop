@@ -26,7 +26,8 @@ public class ScheduleService {
                 savedSchedule.getId(),
                 savedSchedule.getUsername(),
                 savedSchedule.getTitle(),
-                savedSchedule.getContents());
+                savedSchedule.getContents()
+        );
     }
 
     public List<ScheduleResponseDto> findAll() {
@@ -35,5 +36,17 @@ public class ScheduleService {
                 .stream()
                 .map(ScheduleResponseDto::toDto)
                 .toList();
+    }
+
+    public ScheduleResponseDto findById(Long id) {
+
+        Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
+
+        return new ScheduleResponseDto(
+                findSchedule.getId(),
+                findSchedule.getUsername(),
+                findSchedule.getTitle(),
+                findSchedule.getContents()
+        );
     }
 }

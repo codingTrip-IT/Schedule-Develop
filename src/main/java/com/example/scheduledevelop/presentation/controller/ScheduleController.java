@@ -5,6 +5,7 @@ import com.example.scheduledevelop.presentation.dto.CreateScheduleRequestDto;
 import com.example.scheduledevelop.presentation.dto.ScheduleResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,5 +33,13 @@ public class ScheduleController {
         List<ScheduleResponseDto> scheduleResponseDtoList = scheduleService.findAll();
 
         return new ResponseEntity<>(scheduleResponseDtoList,HttpStatus.OK);
+    }
+
+    @GetMapping("/{scheduleId}")
+    public ResponseEntity<ScheduleResponseDto> findById(@PathVariable("scheduleId") Long id){
+
+        ScheduleResponseDto scheduleResponseDto = scheduleService.findById(id);
+
+        return new ResponseEntity<>(scheduleResponseDto,HttpStatus.OK);
     }
 }
