@@ -35,4 +35,10 @@ public class MemberController {
         return new ResponseEntity<>(memberResponseDtoList, HttpStatus.OK);
     }
 
+    @GetMapping("/{memberId}")
+    public ResponseEntity<MemberResponseDto> findById(@PathVariable("memberId") Long id){
+        MemberResponseDto memberResponseDto = memberService.findById(id);
+        return new ResponseEntity<>(memberResponseDto,HttpStatus.OK);
+    }
+
 }

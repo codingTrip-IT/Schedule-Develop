@@ -5,10 +5,13 @@ import com.example.scheduledevelop.domain.repository.MemberRepository;
 import com.example.scheduledevelop.presentation.dto.CreateMemberResponseDto;
 import com.example.scheduledevelop.presentation.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,10 +38,21 @@ public class MemberService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public MemberResponseDto findById(Long id) {
 
-//
-//    @Transactional(readOnly = true)
-//
+        Optional<Member> optionalMember = memberRepository.findById(id);
+
+        if (optionalMember.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 id가 없습니다."+id);
+        }
+
+        Member findMember = optionalMember.get();
+
+        return new MemberResponseDto(findMember.getId(),findMember.getName(),findMember.getEmail());
+    }
+
+
 //    @Transactional
 //    @Transactional
 }
