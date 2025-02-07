@@ -1,32 +1,39 @@
 package com.example.scheduledevelop.application.service;
 
+import com.example.scheduledevelop.domain.entity.Member;
 import com.example.scheduledevelop.domain.entity.Schedule;
+import com.example.scheduledevelop.domain.repository.MemberRepository;
 import com.example.scheduledevelop.domain.repository.ScheduleRepository;
 import com.example.scheduledevelop.presentation.dto.ScheduleResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Member;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
 
-//    private final MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
     private final ScheduleRepository scheduleRepository;
 
     @Transactional
-    public ScheduleResponseDto save(String username, String title, String contents) {
+    public ScheduleResponseDto save(String title, String contents, String memberEmail) {
 
-        Schedule schedule = new Schedule(username, title, contents);
+        Member findMember = memberRepository.findMemberByEmailOrElseThrow(memberEmail);
+
+        Schedule schedule = new Schedule(title, contents);
+        schedule.setMember(findMember);
+
         Schedule savedSchedule = scheduleRepository.save(schedule);
         return new ScheduleResponseDto(
                 savedSchedule.getId(),
-                savedSchedule.getUsername(),
                 savedSchedule.getTitle(),
-                savedSchedule.getContents()
+                savedSchedule.getContents(),
+                savedSchedule.getMember().getName(),
+                savedSchedule.getMember().getEmail()
         );
     }
 
@@ -46,9 +53,10 @@ public class ScheduleService {
 
         return new ScheduleResponseDto(
                 findSchedule.getId(),
-                findSchedule.getUsername(),
                 findSchedule.getTitle(),
-                findSchedule.getContents()
+                findSchedule.getContents(),
+                findSchedule.getMember().getName(),
+                findSchedule.getMember().getEmail()
         );
     }
 

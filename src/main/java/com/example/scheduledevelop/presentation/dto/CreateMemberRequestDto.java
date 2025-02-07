@@ -6,7 +6,6 @@ import lombok.Getter;
 public class CreateMemberRequestDto {
 
     private final String name;
-
     private final String email;
 
     public CreateMemberRequestDto(String name, String email) {

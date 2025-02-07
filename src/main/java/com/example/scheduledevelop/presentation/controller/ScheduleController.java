@@ -1,12 +1,11 @@
 package com.example.scheduledevelop.presentation.controller;
 
 import com.example.scheduledevelop.application.service.ScheduleService;
-import com.example.scheduledevelop.presentation.dto.CreateScheduleRequestDto;
+import com.example.scheduledevelop.presentation.dto.ScheduleSaveRequestDto;
 import com.example.scheduledevelop.presentation.dto.ScheduleResponseDto;
 import com.example.scheduledevelop.presentation.dto.UpdateTitleContentsRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +19,10 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping
-    public ResponseEntity<ScheduleResponseDto> save(@RequestBody CreateScheduleRequestDto requestDto) {
+    public ResponseEntity<ScheduleResponseDto> save(@RequestBody ScheduleSaveRequestDto requestDto) {
 
         ScheduleResponseDto scheduleResponseDto
-                = scheduleService.save(requestDto.getUsername(), requestDto.getTitle(), requestDto.getContents());
+                = scheduleService.save(requestDto.getTitle(), requestDto.getContents(),requestDto.getMemberEmail());
 
         return new ResponseEntity<>(scheduleResponseDto, HttpStatus.CREATED);
     }

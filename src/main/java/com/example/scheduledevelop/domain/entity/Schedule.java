@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Optional;
+
 @Getter
 @Entity
 @Table(name = "schedule")
@@ -12,9 +14,6 @@ public class Schedule extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private String username;
 
     @Column(nullable = false)
     private String title;
@@ -30,13 +29,12 @@ public class Schedule extends BaseEntity{
     public Schedule() {
     }
 
-    public Schedule(String username, String title, String contents) {
-        this.username = username;
+    public Schedule(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }
 
-    public void updateTitleContents(String title,String contents) {
+    public void updateTitleContents(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }
