@@ -55,7 +55,7 @@ public class ScheduleController {
             @RequestBody UpdateTitleAndContentsRequestDto requestDto
     ) {
 
-        Member findMember = scheduleService.findMemberId(id);
+        Member findMember = scheduleService.findMember(id);
         Long findMemberId = findMember.getId();
 
         // 작성자만 수정 가능
@@ -75,7 +75,7 @@ public class ScheduleController {
             @PathVariable("scheduleId") Long id
     ){
 
-        Member findMember = scheduleService.findMemberId(id);
+        Member findMember = scheduleService.findMember(id);
         Long findMemberId = findMember.getId();
 
         // 작성자만 삭제 가능

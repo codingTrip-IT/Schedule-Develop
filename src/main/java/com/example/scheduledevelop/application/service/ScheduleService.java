@@ -58,8 +58,7 @@ public class ScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public Member findMemberId(Long id) {
-
+    public Member findMember(Long id) {
         Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
         return findSchedule.getMember();
     }
