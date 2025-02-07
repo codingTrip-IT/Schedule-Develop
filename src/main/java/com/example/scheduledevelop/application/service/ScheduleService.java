@@ -24,8 +24,7 @@ public class ScheduleService {
 
         Member findMember = memberRepository.findMemberByEmailOrElseThrow(memberEmail);
 
-        Schedule schedule = new Schedule(title, contents);
-        schedule.setMember(findMember);
+        Schedule schedule = new Schedule(title, contents,findMember);
 
         Schedule savedSchedule = scheduleRepository.save(schedule);
         return new ScheduleResponseDto(

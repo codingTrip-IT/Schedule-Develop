@@ -1,10 +1,7 @@
 package com.example.scheduledevelop.presentation.controller;
 
 import com.example.scheduledevelop.application.service.MemberService;
-import com.example.scheduledevelop.presentation.dto.CreateMemberRequestDto;
-import com.example.scheduledevelop.presentation.dto.CreateMemberResponseDto;
-import com.example.scheduledevelop.presentation.dto.MemberResponseDto;
-import com.example.scheduledevelop.presentation.dto.UpdateNameEmailRequestDto;
+import com.example.scheduledevelop.presentation.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +20,7 @@ public class MemberController {
     public ResponseEntity<CreateMemberResponseDto> save(@RequestBody CreateMemberRequestDto requestDto){
 
         CreateMemberResponseDto createMemberResponseDto
-                 = memberService.save(requestDto.getName(),requestDto.getEmail());
+                 = memberService.save(requestDto.getName(),requestDto.getEmail(),requestDto.getPassword());
 
         return new ResponseEntity<>(createMemberResponseDto, HttpStatus.CREATED);
     }
@@ -48,6 +45,16 @@ public class MemberController {
             @RequestBody UpdateNameEmailRequestDto requestDto){
 
         memberService.updateNameEmail(id,requestDto.getName(),requestDto.getEmail());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/{memberId}/password")
+    public ResponseEntity<Void> updatePassword(
+            @PathVariable("memberId") Long id,
+            @RequestBody UpdatePasswordRequestDto requestDto){
+
+        memberService.updatePassword(id,requestDto.getOldPassword(), requestDto.getNewPassword());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

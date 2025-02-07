@@ -20,9 +20,9 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public CreateMemberResponseDto save(String name, String email) {
+    public CreateMemberResponseDto save(String name, String email, String password) {
 
-        Member member = new Member(name, email);
+        Member member = new Member(name, email, password);
 
         Member savedMember = memberRepository.save(member);
 
@@ -61,11 +61,24 @@ public class MemberService {
     }
 
     @Transactional
+    public void updatePassword(Long id, String oldPassword, String newPassword) {
+
+        Member findMember = memberRepository.findByIdOrElseThrow(id);
+
+        if (!findMember.getPassword().equals(oldPassword)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"비밀번호가 일치하지 않습니다.");
+        }
+
+        findMember.updatePassword(newPassword);
+    }
+
+    @Transactional
     public void delete(Long id) {
 
         Member findMember = memberRepository.findByIdOrElseThrow(id);
 
         memberRepository.delete(findMember);
     }
+
 
 }
