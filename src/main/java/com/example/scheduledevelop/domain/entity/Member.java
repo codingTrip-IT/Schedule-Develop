@@ -30,7 +30,7 @@ public class Member extends BaseEntity{
         this.password = password;
     }
 
-    public void updateNameEmail(String name,String email) {
+    public void updateNameAndEmail(String name,String email) {
         this.name = name;
         this.email = email;
     }

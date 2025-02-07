@@ -2,7 +2,7 @@ package com.example.scheduledevelop.application.service;
 
 import com.example.scheduledevelop.domain.entity.Member;
 import com.example.scheduledevelop.domain.repository.MemberRepository;
-import com.example.scheduledevelop.presentation.dto.CreateMemberResponseDto;
+import com.example.scheduledevelop.presentation.dto.SingUpResponseDto;
 import com.example.scheduledevelop.presentation.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,13 +20,13 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public CreateMemberResponseDto save(String name, String email, String password) {
+    public SingUpResponseDto save(String name, String email, String password) {
 
         Member member = new Member(name, email, password);
 
         Member savedMember = memberRepository.save(member);
 
-        return new CreateMemberResponseDto(savedMember.getId(),savedMember.getName(),savedMember.getEmail());
+        return new SingUpResponseDto(savedMember.getId(),savedMember.getName(),savedMember.getEmail());
     }
 
     @Transactional(readOnly = true)
@@ -53,11 +53,11 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateNameEmail(Long id, String name, String email) {
+    public void updateNameAndEmail(Long id, String name, String email) {
 
         Member findMember = memberRepository.findByIdOrElseThrow(id);
 
-        findMember.updateNameEmail(name,email);
+        findMember.updateNameAndEmail(name,email);
     }
 
     @Transactional

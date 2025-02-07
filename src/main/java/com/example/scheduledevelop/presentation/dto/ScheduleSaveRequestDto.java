@@ -6,15 +6,11 @@ import lombok.Getter;
 public class ScheduleSaveRequestDto {
 
     private final String title;
-
     private final String contents;
 
-    private final String memberEmail;
-
-    public ScheduleSaveRequestDto(String title, String contents, String memberEmail) {
+    public ScheduleSaveRequestDto(String title, String contents) {
         this.title = title;
         this.contents = contents;
-        this.memberEmail = memberEmail;
     }
 
 }

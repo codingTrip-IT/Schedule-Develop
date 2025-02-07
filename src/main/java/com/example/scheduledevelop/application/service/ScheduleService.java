@@ -20,11 +20,9 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
 
     @Transactional
-    public ScheduleResponseDto save(String title, String contents, String memberEmail) {
+    public ScheduleResponseDto save(String title, String contents, Member member) {
 
-        Member findMember = memberRepository.findMemberByEmailOrElseThrow(memberEmail);
-
-        Schedule schedule = new Schedule(title, contents,findMember);
+        Schedule schedule = new Schedule(title, contents, member);
 
         Schedule savedSchedule = scheduleRepository.save(schedule);
         return new ScheduleResponseDto(
@@ -57,6 +55,13 @@ public class ScheduleService {
                 findSchedule.getMember().getName(),
                 findSchedule.getMember().getEmail()
         );
+    }
+
+    @Transactional(readOnly = true)
+    public Member findMemberId(Long id) {
+
+        Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
+        return findSchedule.getMember();
     }
 
     @Transactional

@@ -1,6 +1,8 @@
 package com.example.scheduledevelop.presentation.controller;
 
+import com.example.scheduledevelop.SessionConst;
 import com.example.scheduledevelop.application.service.MemberService;
+import com.example.scheduledevelop.domain.entity.Member;
 import com.example.scheduledevelop.presentation.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,13 +18,13 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping
-    public ResponseEntity<CreateMemberResponseDto> save(@RequestBody CreateMemberRequestDto requestDto){
+    @PostMapping("/signup")
+    public ResponseEntity<SingUpResponseDto> save(@RequestBody SignUpRequestDto requestDto){
 
-        CreateMemberResponseDto createMemberResponseDto
+        SingUpResponseDto singUpResponseDto
                  = memberService.save(requestDto.getName(),requestDto.getEmail(),requestDto.getPassword());
 
-        return new ResponseEntity<>(createMemberResponseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(singUpResponseDto, HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -41,18 +43,30 @@ public class MemberController {
 
     @PatchMapping("/{memberId}")
     public ResponseEntity<Void> updateNameEmail(
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
             @PathVariable("memberId") Long id,
-            @RequestBody UpdateNameEmailRequestDto requestDto){
+            @RequestBody UpdateNameAndEmailRequestDto requestDto){
 
-        memberService.updateNameEmail(id,requestDto.getName(),requestDto.getEmail());
+        // 본인만 수정 가능
+        if (!loginMember.getId().equals(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        memberService.updateNameAndEmail(id,requestDto.getName(),requestDto.getEmail());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PatchMapping("/{memberId}/password")
     public ResponseEntity<Void> updatePassword(
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
             @PathVariable("memberId") Long id,
             @RequestBody UpdatePasswordRequestDto requestDto){
+
+        // 본인만 수정 가능
+        if (!loginMember.getId().equals(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         memberService.updatePassword(id,requestDto.getOldPassword(), requestDto.getNewPassword());
 
@@ -60,7 +74,15 @@ public class MemberController {
     }
 
     @DeleteMapping("/{memberId}")
-    public ResponseEntity<Void> delete(@PathVariable("memberId") Long id){
+    public ResponseEntity<Void> delete(
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
+            @PathVariable("memberId") Long id){
+
+        // 본인만 삭제 가능
+        if (!loginMember.getId().equals(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         memberService.delete(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
