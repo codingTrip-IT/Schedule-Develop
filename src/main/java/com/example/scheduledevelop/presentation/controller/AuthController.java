@@ -6,6 +6,7 @@ import com.example.scheduledevelop.domain.entity.Member;
 import com.example.scheduledevelop.presentation.dto.LoginRequestDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto requestDto, HttpServletRequest request){
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDto requestDto, HttpServletRequest request){
 
         Member loginMember = authService.login(requestDto.getEmail(),requestDto.getPassword());
 

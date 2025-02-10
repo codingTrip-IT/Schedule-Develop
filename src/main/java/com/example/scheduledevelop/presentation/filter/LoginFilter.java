@@ -1,4 +1,4 @@
-package com.example.scheduledevelop.filter;
+package com.example.scheduledevelop.presentation.filter;
 
 import com.example.scheduledevelop.SessionConst;
 import jakarta.servlet.*;

@@ -4,6 +4,7 @@ import com.example.scheduledevelop.SessionConst;
 import com.example.scheduledevelop.application.service.MemberService;
 import com.example.scheduledevelop.domain.entity.Member;
 import com.example.scheduledevelop.presentation.dto.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<SingUpResponseDto> save(@RequestBody SignUpRequestDto requestDto){
+    public ResponseEntity<SingUpResponseDto> save(@Valid @RequestBody SignUpRequestDto requestDto){
 
         SingUpResponseDto singUpResponseDto
                  = memberService.save(requestDto.getName(),requestDto.getEmail(),requestDto.getPassword());
@@ -45,7 +46,7 @@ public class MemberController {
     public ResponseEntity<Void> updateNameEmail(
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
             @PathVariable("memberId") Long id,
-            @RequestBody UpdateNameAndEmailRequestDto requestDto){
+            @Valid @RequestBody UpdateNameAndEmailRequestDto requestDto){
 
         // 본인만 수정 가능
         if (!loginMember.getId().equals(id)){
@@ -61,7 +62,7 @@ public class MemberController {
     public ResponseEntity<Void> updatePassword(
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
             @PathVariable("memberId") Long id,
-            @RequestBody UpdatePasswordRequestDto requestDto){
+            @Valid @RequestBody UpdatePasswordRequestDto requestDto){
 
         // 본인만 수정 가능
         if (!loginMember.getId().equals(id)){

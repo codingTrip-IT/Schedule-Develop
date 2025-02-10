@@ -6,6 +6,7 @@ import com.example.scheduledevelop.domain.entity.Member;
 import com.example.scheduledevelop.presentation.dto.ScheduleSaveRequestDto;
 import com.example.scheduledevelop.presentation.dto.ScheduleResponseDto;
 import com.example.scheduledevelop.presentation.dto.UpdateTitleAndContentsRequestDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class ScheduleController {
     @PostMapping
     public ResponseEntity<ScheduleResponseDto> save(
         @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
-        @RequestBody ScheduleSaveRequestDto requestDto) {
+        @Valid @RequestBody ScheduleSaveRequestDto requestDto) {
 
         // 생성 로직
         ScheduleResponseDto scheduleResponseDto
@@ -52,7 +53,7 @@ public class ScheduleController {
     public ResponseEntity<Void> updateTitleAndContents(
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
             @PathVariable("scheduleId") Long id,
-            @RequestBody UpdateTitleAndContentsRequestDto requestDto
+            @Valid @RequestBody UpdateTitleAndContentsRequestDto requestDto
     ) {
 
         Member findMember = scheduleService.findMember(id);
