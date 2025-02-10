@@ -6,25 +6,22 @@ import com.example.scheduledevelop.domain.entity.Schedule;
 import com.example.scheduledevelop.domain.repository.CommentRepository;
 import com.example.scheduledevelop.domain.repository.ScheduleRepository;
 import com.example.scheduledevelop.presentation.dto.CommentResponseDto;
-import com.example.scheduledevelop.presentation.dto.CommentSaveRequestDto;
 import com.example.scheduledevelop.presentation.dto.CommentSaveResponseDto;
 import com.example.scheduledevelop.presentation.dto.ScheduleResponseDto;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final ScheduleRepository scheduleRepository;
 
     @Transactional
     public CommentSaveResponseDto save(String contents, Schedule schedule, Member loginMember) {
@@ -59,6 +56,7 @@ public class CommentService {
         return dtos;
     }
 
+    @Transactional(readOnly = true)
     public CommentResponseDto findById(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("해당 id 값이 없습니다.")
@@ -70,6 +68,27 @@ public class CommentService {
                 comment.getSchedule().getContents(),
                 comment.getMember().getName(),
                 comment.getMember().getEmail(),
-                comment.getContents());
+                comment.getContents()
+        );
+    }
+
+    @Transactional
+    public CommentResponseDto updateContents(Long commentId, String contents) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("해당 id 값이 없습니다.")
+        );
+
+        log.info("댓글 수정 전={}", comment.getContents());
+        comment.updateContents(contents);
+        log.info("댓글 수정 후={}", comment.getContents());
+
+        return new CommentResponseDto(
+                commentId,
+                comment.getSchedule().getTitle(),
+                comment.getSchedule().getContents(),
+                comment.getMember().getName(),
+                comment.getMember().getEmail(),
+                comment.getContents()
+        );
     }
 }

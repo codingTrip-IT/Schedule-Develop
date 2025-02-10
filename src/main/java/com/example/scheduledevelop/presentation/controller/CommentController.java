@@ -9,6 +9,7 @@ import com.example.scheduledevelop.domain.entity.Schedule;
 import com.example.scheduledevelop.presentation.dto.CommentResponseDto;
 import com.example.scheduledevelop.presentation.dto.CommentSaveRequestDto;
 import com.example.scheduledevelop.presentation.dto.CommentSaveResponseDto;
+import com.example.scheduledevelop.presentation.dto.UpdateContentsRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -52,5 +53,13 @@ public class CommentController {
             @PathVariable("commentId") Long commentId
     ) {
         return ResponseEntity.ok(commentService.findById(commentId));
+    }
+
+    @PatchMapping("/schedules/comments/{commentId}")
+    public ResponseEntity<CommentResponseDto> updateContents(
+            @PathVariable("commentId") Long commentId,
+            @Valid @RequestBody UpdateContentsRequestDto requestDto
+            ) {
+        return ResponseEntity.ok(commentService.updateContents(commentId, requestDto.getContents()));
     }
 }

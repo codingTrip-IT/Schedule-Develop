@@ -84,9 +84,13 @@ public class MemberService {
     @Transactional
     public void delete(Long id) {
 
-        Member findMember = memberRepository.findByIdOrElseThrow(id);
+//        Member findMember = memberRepository.findByIdOrElseThrow(id);
 
-        memberRepository.delete(findMember);
+        if (!memberRepository.existsById(id)){
+            throw new IllegalArgumentException("해당 id가 존재하지 않습니다.");
+        }
+
+        memberRepository.deleteById(id);
     }
 
 
