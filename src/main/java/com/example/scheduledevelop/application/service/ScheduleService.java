@@ -64,8 +64,8 @@ public class ScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public Schedule findSchedule(Long id) {
-        return scheduleRepository.findByIdOrElseThrow(id);
+    public Schedule findSchedule(Long scheduleId) {
+        return scheduleRepository.findByIdOrElseThrow(scheduleId);
     }
 
     @Transactional

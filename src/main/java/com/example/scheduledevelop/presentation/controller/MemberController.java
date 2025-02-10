@@ -87,9 +87,7 @@ public class MemberController {
         if (!loginMember.getId().equals(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
         memberService.delete(id);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
