@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -56,5 +57,19 @@ public class CommentService {
             );
         }
         return dtos;
+    }
+
+    public CommentResponseDto findById(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("해당 id 값이 없습니다.")
+        );
+
+        return new CommentResponseDto(
+                commentId,
+                comment.getSchedule().getTitle(),
+                comment.getSchedule().getContents(),
+                comment.getMember().getName(),
+                comment.getMember().getEmail(),
+                comment.getContents());
     }
 }
