@@ -9,15 +9,8 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member,Long> {
 
-//    Optional<Member> findByEmailAndPassword(String email, String password);
-
-//    default Member findByEmailAndPasswordOrElseThrow(String email, String password){
-//        return findByEmailAndPassword(email,password).orElseThrow(
-//                () -> new ResponseStatusException(HttpStatus.UNAUTHORIZED,"email과 password을 찾지 못했습니다.")
-//        );
-//    }
-
     Member findByEmailAndPassword(String email, String password);
+    Member findByEmail(String email);
 
     default Member findByIdOrElseThrow(Long id){
         return findById(id).orElseThrow(

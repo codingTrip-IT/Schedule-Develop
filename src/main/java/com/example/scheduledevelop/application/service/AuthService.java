@@ -16,4 +16,8 @@ public class AuthService {
     public Member login(String email, String password) {
         return memberRepository.findByEmailAndPassword(email, password);
     }
+
+    public Member findByEmail(String email) {
+            return memberRepository.findByEmail(email);
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.scheduledevelop.presentation.dto;
 
+import com.example.scheduledevelop.config.WebConfig;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

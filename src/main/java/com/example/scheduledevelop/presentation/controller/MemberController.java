@@ -2,6 +2,7 @@ package com.example.scheduledevelop.presentation.controller;
 
 import com.example.scheduledevelop.SessionConst;
 import com.example.scheduledevelop.application.service.MemberService;
+import com.example.scheduledevelop.config.WebConfig;
 import com.example.scheduledevelop.domain.entity.Member;
 import com.example.scheduledevelop.presentation.dto.*;
 import jakarta.validation.Valid;
@@ -18,12 +19,15 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final WebConfig.PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
     public ResponseEntity<SingUpResponseDto> save(@Valid @RequestBody SignUpRequestDto requestDto){
 
+        String encyptPassword = passwordEncoder.encode(requestDto.getPassword()); //비밀번호 암호화
+
         SingUpResponseDto singUpResponseDto
-                 = memberService.save(requestDto.getName(),requestDto.getEmail(),requestDto.getPassword());
+                 = memberService.save(requestDto.getName(),requestDto.getEmail(),encyptPassword);
 
         return new ResponseEntity<>(singUpResponseDto, HttpStatus.CREATED);
     }

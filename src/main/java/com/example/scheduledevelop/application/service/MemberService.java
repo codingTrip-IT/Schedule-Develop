@@ -1,10 +1,12 @@
 package com.example.scheduledevelop.application.service;
 
+import com.example.scheduledevelop.config.WebConfig;
 import com.example.scheduledevelop.domain.entity.Member;
 import com.example.scheduledevelop.domain.repository.MemberRepository;
 import com.example.scheduledevelop.presentation.dto.SingUpResponseDto;
 import com.example.scheduledevelop.presentation.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,11 +15,13 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final WebConfig.PasswordEncoder passwordEncoder;
 
     @Transactional
     public SingUpResponseDto save(String name, String email, String password) {
@@ -64,12 +68,17 @@ public class MemberService {
     public void updatePassword(Long id, String oldPassword, String newPassword) {
 
         Member findMember = memberRepository.findByIdOrElseThrow(id);
+        String DbPassword = findMember.getPassword();
+        log.info("DbPassword={}", DbPassword);
 
-        if (!findMember.getPassword().equals(oldPassword)){
+        if (!passwordEncoder.matches(oldPassword,DbPassword)){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"비밀번호가 일치하지 않습니다.");
         }
 
-        findMember.updatePassword(newPassword);
+        String encyptPassword = passwordEncoder.encode(newPassword); //비밀번호 암호화
+        log.info("encyptPassword={}", encyptPassword);
+
+        findMember.updatePassword(encyptPassword);
     }
 
     @Transactional
