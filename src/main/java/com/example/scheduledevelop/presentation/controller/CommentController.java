@@ -62,4 +62,11 @@ public class CommentController {
             ) {
         return ResponseEntity.ok(commentService.updateContents(commentId, requestDto.getContents()));
     }
+
+    @DeleteMapping("/schedules/comments/{commentId}")
+    public void delete(
+            @PathVariable("commentId") Long commentId
+    ) {
+        commentService.delete(commentId);
+    }
 }

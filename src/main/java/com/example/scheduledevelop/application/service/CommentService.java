@@ -91,4 +91,12 @@ public class CommentService {
                 comment.getContents()
         );
     }
+
+    @Transactional
+    public void delete(Long commentId) {
+        if (!commentRepository.existsById(commentId)){
+            throw new IllegalArgumentException("해당 id가 존재하지 않습니다.");
+        }
+        commentRepository.deleteById(commentId);
+    }
 }
