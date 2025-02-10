@@ -2,6 +2,7 @@ package com.example.scheduledevelop.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Optional;
@@ -9,6 +10,7 @@ import java.util.Optional;
 @Getter
 @Entity
 @Table(name = "schedule")
+@NoArgsConstructor
 public class Schedule extends BaseEntity{
 
     @Id
@@ -24,9 +26,6 @@ public class Schedule extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-
-    public Schedule() {
-    }
 
     public Schedule(String title, String contents, Member member) {
         this.title = title;

@@ -63,6 +63,11 @@ public class ScheduleService {
         return findSchedule.getMember();
     }
 
+    @Transactional(readOnly = true)
+    public Schedule findSchedule(Long id) {
+        return scheduleRepository.findByIdOrElseThrow(id);
+    }
+
     @Transactional
     public void updateTitleContents(Long id, String title, String contents) {
 
