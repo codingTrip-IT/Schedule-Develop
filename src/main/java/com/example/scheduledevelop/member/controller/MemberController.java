@@ -40,24 +40,19 @@ public class MemberController {
 
     @GetMapping("/members/{memberId}")
     public ResponseEntity<MemberResponseDto> getMember(@PathVariable("memberId") Long id){
-        MemberResponseDto memberResponseDto = memberService.findById(id);
-        return new ResponseEntity<>(memberResponseDto,HttpStatus.OK);
+        return ResponseEntity.ok(memberService.findById(id));
     }
 
     @PatchMapping("/members/{memberId}")
-    public ResponseEntity<Void> updateNameAndEmail(
+    public ResponseEntity<MemberResponseDto> updateNameAndEmail(
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
             @PathVariable("memberId") Long id,
             @Valid @RequestBody UpdateNameAndEmailRequestDto requestDto){
 
-        // 본인만 수정 가능
-        if (!loginMember.getId().equals(id)){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        MemberResponseDto memberResponseDto
+                = memberService.updateNameAndEmail(id,requestDto.getName(),requestDto.getEmail(),loginMember);
 
-        memberService.updateNameAndEmail(id,requestDto.getName(),requestDto.getEmail());
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok(memberResponseDto);
     }
 
     @PatchMapping("/members/{memberId}/password")
@@ -66,13 +61,7 @@ public class MemberController {
             @PathVariable("memberId") Long id,
             @Valid @RequestBody UpdatePasswordRequestDto requestDto){
 
-        // 본인만 수정 가능
-        if (!loginMember.getId().equals(id)){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        memberService.updatePassword(id,requestDto.getOldPassword(), requestDto.getNewPassword());
-
+        memberService.updatePassword(id,requestDto.getOldPassword(), requestDto.getNewPassword(),loginMember);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -81,11 +70,7 @@ public class MemberController {
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
             @PathVariable("memberId") Long id){
 
-        // 본인만 삭제 가능
-        if (!loginMember.getId().equals(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        memberService.delete(id);
+        memberService.delete(id,loginMember);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -61,7 +61,7 @@ public class ScheduleController {
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
             @PathVariable("scheduleId") Long id
     ){
-        scheduleService.delete(id);
+        scheduleService.delete(id,loginMember);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

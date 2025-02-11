@@ -2,9 +2,7 @@ package com.example.scheduledevelop.comment.controller;
 
 import com.example.scheduledevelop.global.SessionConst;
 import com.example.scheduledevelop.comment.service.CommentService;
-import com.example.scheduledevelop.schedule.service.ScheduleService;
 import com.example.scheduledevelop.member.entity.Member;
-import com.example.scheduledevelop.schedule.entity.Schedule;
 import com.example.scheduledevelop.comment.dto.CommentResponseDto;
 import com.example.scheduledevelop.comment.dto.CommentSaveRequestDto;
 import com.example.scheduledevelop.comment.dto.CommentSaveResponseDto;
@@ -21,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentController {
 
-    private final ScheduleService scheduleService;
     private final CommentService commentService;
 
     @PostMapping("/schedules/{scheduleId}/comments")
@@ -30,12 +27,8 @@ public class CommentController {
             @PathVariable("scheduleId") Long scheduleId,
             @Valid @RequestBody CommentSaveRequestDto requestDto
     ){
-        //서비스로 옮기기
-        Schedule schedule = scheduleService.findSchedule(scheduleId);
-
-        // 생성 로직
         CommentSaveResponseDto commentSaveResponseDto
-                = commentService.save(requestDto.getContents(),schedule,loginMember);
+                = commentService.save(requestDto.getContents(),scheduleId,loginMember);
 
         return new ResponseEntity<>(commentSaveResponseDto, HttpStatus.CREATED);
     }
@@ -44,8 +37,7 @@ public class CommentController {
     public ResponseEntity<List<CommentResponseDto>> getComments(
             @PathVariable("scheduleId") Long scheduleId
     ) {
-        Schedule schedule = scheduleService.findSchedule(scheduleId);
-        return ResponseEntity.ok(commentService.findAll(schedule));
+        return ResponseEntity.ok(commentService.findAll(scheduleId));
     }
 
     @GetMapping("/schedules/comments/{commentId}")

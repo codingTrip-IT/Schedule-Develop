@@ -1,11 +1,16 @@
 package com.example.scheduledevelop.comment.service;
 
 import com.example.scheduledevelop.comment.entity.Comment;
+import com.example.scheduledevelop.global.exception.ApiError;
+import com.example.scheduledevelop.global.exception.ApplicationException;
+import com.example.scheduledevelop.global.exception.CustomErrorMessageCode;
+import com.example.scheduledevelop.global.exception.ErrorMessageCode;
 import com.example.scheduledevelop.member.entity.Member;
 import com.example.scheduledevelop.schedule.entity.Schedule;
 import com.example.scheduledevelop.comment.repository.CommentRepository;
 import com.example.scheduledevelop.comment.dto.CommentResponseDto;
 import com.example.scheduledevelop.comment.dto.CommentSaveResponseDto;
+import com.example.scheduledevelop.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,9 +25,16 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final ScheduleRepository scheduleRepository;
 
     @Transactional
-    public CommentSaveResponseDto save(String contents, Schedule schedule, Member loginMember) {
+    public CommentSaveResponseDto save(String contents, Long scheduleId, Member loginMember) {
+
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                                CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
+        );
 
         Comment comment = new Comment(contents, schedule, loginMember);
 
@@ -40,8 +52,8 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommentResponseDto> findAll(Schedule schedule) {
-        List<Comment> commentList = commentRepository.findAllBySchedule_Id(schedule.getId());
+    public List<CommentResponseDto> findAll(Long scheduleId) {
+        List<Comment> commentList = commentRepository.findAllBySchedule_Id(scheduleId);
 
         List<CommentResponseDto> dtos = new ArrayList<>();
         for (Comment comment : commentList) {

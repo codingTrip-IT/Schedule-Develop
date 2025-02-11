@@ -1,5 +1,9 @@
 package com.example.scheduledevelop.schedule.service;
 
+import com.example.scheduledevelop.global.exception.ApiError;
+import com.example.scheduledevelop.global.exception.ApplicationException;
+import com.example.scheduledevelop.global.exception.CustomErrorMessageCode;
+import com.example.scheduledevelop.global.exception.ErrorMessageCode;
 import com.example.scheduledevelop.member.entity.Member;
 import com.example.scheduledevelop.schedule.entity.Schedule;
 import com.example.scheduledevelop.comment.repository.CommentRepository;
@@ -14,6 +18,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -64,7 +70,9 @@ public class ScheduleService {
     @Transactional(readOnly = true)
     public ScheduleResponseDto findById(Long id) {
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("id를 찾을 수 없습니다.")
+                () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                                             CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
         return new ScheduleResponseDto(
                 schedule.getId(),
@@ -77,18 +85,22 @@ public class ScheduleService {
         );
     }
 
-    @Transactional(readOnly = true)
-    public Schedule findSchedule(Long scheduleId) {
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new IllegalArgumentException("id를 찾을 수 없습니다.")
-        );
-        return schedule;
-    }
+//    @Transactional(readOnly = true)
+//    public Schedule findSchedule(Long scheduleId) {
+//        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+//                () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
+//                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+//                                             CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
+//        );
+//        return schedule;
+//    }
 
     @Transactional
     public ScheduleResponseDto updateTitleContents(Long id, String title, String contents, Member loginMember) {
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("id를 찾을 수 없습니다.")
+                () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                                             CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
         Long findMemberId = schedule.getMember().getId();
         log.info("fineMemberId={}",findMemberId);
@@ -96,7 +108,11 @@ public class ScheduleService {
 
         // 작성자만 수정 가능
         if (loginMember.getId() != findMemberId){
-            throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
+//            throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
+//            new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new ApplicationException(ErrorMessageCode.FORBIDDEN,
+                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getCode(),
+                                         CustomErrorMessageCode.NOT_OWNER.getMessage())));
         }
 
         schedule.updateTitleContents(title, contents);
@@ -113,12 +129,26 @@ public class ScheduleService {
     }
 
     @Transactional
-    public void delete(Long id) {
-
+    public void delete(Long id, Member loginMember) {
 //        Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
+//        if (!scheduleRepository.existsById(id)){
+//            throw new IllegalArgumentException("해당 id가 존재하지 않습니다.");
+//        }
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                                             CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
+        );
 
-        if (!scheduleRepository.existsById(id)){
-            throw new IllegalArgumentException("해당 id가 존재하지 않습니다.");
+        Long findMemberId = schedule.getMember().getId();
+        log.info("fineMemberId={}",findMemberId);
+        log.info("loginMember.getId()={}",loginMember.getId());
+
+        // 작성자만 수정 가능
+        if (loginMember.getId() != findMemberId){
+            throw new ApplicationException(ErrorMessageCode.FORBIDDEN,
+                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getCode(),
+                                         CustomErrorMessageCode.NOT_OWNER.getMessage())));
         }
 
         scheduleRepository.deleteById(id);
