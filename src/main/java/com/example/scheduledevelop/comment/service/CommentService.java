@@ -29,11 +29,10 @@ public class CommentService {
 
     @Transactional
     public CommentSaveResponseDto save(String contents, Long scheduleId, Member loginMember) {
-
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
                 () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
                         List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
-                                CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
+                                             CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
 
         Comment comment = new Comment(contents, schedule, loginMember);
@@ -75,7 +74,9 @@ public class CommentService {
     @Transactional(readOnly = true)
     public CommentResponseDto findById(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
-                () -> new IllegalArgumentException("해당 id 값이 없습니다.")
+                () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                                             CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
 
         return new CommentResponseDto(
@@ -91,10 +92,21 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDto updateContents(Long commentId, String contents) {
+    public CommentResponseDto updateContents(Long commentId, String contents, Member loginMember) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
-                () -> new IllegalArgumentException("해당 id 값이 없습니다.")
+                () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                                             CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
+
+        Long findMemberId = comment.getMember().getId();
+
+        // 작성자만 수정 가능
+        if (loginMember.getId() != findMemberId){
+            throw new ApplicationException(ErrorMessageCode.FORBIDDEN,
+                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getCode(),
+                            CustomErrorMessageCode.NOT_OWNER.getMessage())));
+        }
 
         log.info("댓글 수정 전={}", comment.getContents());
         comment.updateContents(contents);
@@ -113,9 +125,25 @@ public class CommentService {
     }
 
     @Transactional
-    public void delete(Long commentId) {
-        if (!commentRepository.existsById(commentId)){
-            throw new IllegalArgumentException("해당 id가 존재하지 않습니다.");
+    public void delete(Long commentId, Member loginMember) {
+//        if (!commentRepository.existsById(commentId)){
+//            throw new ApplicationException(ErrorMessageCode.NOT_FOUND,
+//                    List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+//                                         CustomErrorMessageCode.ID_NOT_FOUND.getMessage())));
+//        }
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                                CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
+        );
+
+        Long findMemberId = comment.getMember().getId();
+
+        // 작성자만 수정 가능
+        if (loginMember.getId() != findMemberId){
+            throw new ApplicationException(ErrorMessageCode.FORBIDDEN,
+                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getCode(),
+                            CustomErrorMessageCode.NOT_OWNER.getMessage())));
         }
         commentRepository.deleteById(commentId);
     }

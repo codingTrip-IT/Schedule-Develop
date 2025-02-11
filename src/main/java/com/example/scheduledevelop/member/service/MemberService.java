@@ -121,9 +121,9 @@ public class MemberService {
 
         // 본인만 삭제 가능
         if (!loginMember.getId().equals(id)) {
-            throw new ApplicationException(ErrorMessageCode.UNAUTHORIZED,
-                List.of(new ApiError(CustomErrorMessageCode.INVALID_PASSWORD.getCode(),
-                                     CustomErrorMessageCode.INVALID_PASSWORD.getMessage())));
+            throw new ApplicationException(ErrorMessageCode.FORBIDDEN,
+                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getCode(),
+                                         CustomErrorMessageCode.NOT_OWNER.getMessage())));
         }
 
         memberRepository.deleteById(id);

@@ -56,6 +56,7 @@ public class ScheduleService {
                     long countComment = commentRepository.countBySchedule_Id(schedule.getId());
 
                     return new FindAllScheduleResponseDto(
+                            schedule.getId(),
                             schedule.getTitle(),
                             schedule.getContents(),
                             countComment, //댓글 개수

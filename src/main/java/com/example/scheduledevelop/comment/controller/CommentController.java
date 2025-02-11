@@ -50,15 +50,17 @@ public class CommentController {
     @PatchMapping("/schedules/comments/{commentId}")
     public ResponseEntity<CommentResponseDto> updateContents(
             @PathVariable("commentId") Long commentId,
-            @Valid @RequestBody UpdateContentsRequestDto requestDto
+            @Valid @RequestBody UpdateContentsRequestDto requestDto,
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember
     ) {
-        return ResponseEntity.ok(commentService.updateContents(commentId, requestDto.getContents()));
+        return ResponseEntity.ok(commentService.updateContents(commentId, requestDto.getContents(), loginMember));
     }
 
     @DeleteMapping("/schedules/comments/{commentId}")
     public void deleteComment(
-            @PathVariable("commentId") Long commentId
+            @PathVariable("commentId") Long commentId,
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember
     ) {
-        commentService.delete(commentId);
+        commentService.delete(commentId,loginMember);
     }
 }
