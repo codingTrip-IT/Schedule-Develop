@@ -1,10 +1,10 @@
-package com.example.scheduledevelop.Auth.controller;
+package com.example.scheduledevelop.auth.controller;
 
-import com.example.scheduledevelop.SessionConst;
-import com.example.scheduledevelop.Auth.service.AuthService;
+import com.example.scheduledevelop.global.SessionConst;
+import com.example.scheduledevelop.auth.service.AuthService;
 import com.example.scheduledevelop.global.config.WebConfig;
 import com.example.scheduledevelop.member.entity.Member;
-import com.example.scheduledevelop.Auth.dto.LoginRequestDto;
+import com.example.scheduledevelop.auth.dto.LoginRequestDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;

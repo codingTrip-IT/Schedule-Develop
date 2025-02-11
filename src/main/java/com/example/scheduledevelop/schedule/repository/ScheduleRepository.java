@@ -12,8 +12,10 @@ public interface ScheduleRepository extends JpaRepository<Schedule,Long> {
 
     Page<Schedule> findAllByOrderByModifiedAtDesc(Pageable pageable);
 
-    default Schedule findByIdOrElseThrow(Long id){
-        return findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 id가 존재하지 않습니다."+id));
-    }
+//    Member findByMember_id(Long memberId);
+
+//    default Schedule findByIdOrElseThrow(Long id){
+//        return findById(id).orElseThrow(
+//                () -> new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 id가 존재하지 않습니다."+id));
+//    }
 }

@@ -24,7 +24,7 @@ public class CommentService {
     @Transactional
     public CommentSaveResponseDto save(String contents, Schedule schedule, Member loginMember) {
 
-        Comment comment = new Comment(contents, schedule , loginMember);
+        Comment comment = new Comment(contents, schedule, loginMember);
 
         Comment savedComment = commentRepository.save(comment);
         return new CommentSaveResponseDto(

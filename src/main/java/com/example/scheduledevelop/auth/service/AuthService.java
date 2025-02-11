@@ -1,4 +1,4 @@
-package com.example.scheduledevelop.Auth.service;
+package com.example.scheduledevelop.auth.service;
 
 import com.example.scheduledevelop.member.entity.Member;
 import com.example.scheduledevelop.member.repository.MemberRepository;

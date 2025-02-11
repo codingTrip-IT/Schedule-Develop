@@ -1,6 +1,6 @@
 package com.example.scheduledevelop.global.filter;
 
-import com.example.scheduledevelop.SessionConst;
+import com.example.scheduledevelop.global.SessionConst;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

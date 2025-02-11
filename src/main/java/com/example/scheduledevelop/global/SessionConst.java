@@ -1,4 +1,4 @@
-package com.example.scheduledevelop;
+package com.example.scheduledevelop.global;
 
 public class SessionConst {
 

@@ -1,4 +1,4 @@
-package com.example.scheduledevelop.schedule.dto;
+package com.example.scheduledevelop.global.page;
 
 import lombok.Getter;
 import org.springframework.data.domain.Page;

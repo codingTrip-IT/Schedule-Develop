@@ -4,7 +4,7 @@ import com.example.scheduledevelop.member.entity.Member;
 import com.example.scheduledevelop.schedule.entity.Schedule;
 import com.example.scheduledevelop.comment.repository.CommentRepository;
 import com.example.scheduledevelop.schedule.repository.ScheduleRepository;
-import com.example.scheduledevelop.schedule.dto.CustomResponsePage;
+import com.example.scheduledevelop.global.page.CustomResponsePage;
 import com.example.scheduledevelop.schedule.dto.FindAllScheduleResponseDto;
 import com.example.scheduledevelop.schedule.dto.ScheduleResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +27,8 @@ public class ScheduleService {
     public ScheduleResponseDto save(String title, String contents, Member member) {
 
         Schedule schedule = new Schedule(title, contents, member);
-
         Schedule savedSchedule = scheduleRepository.save(schedule);
+
         return new ScheduleResponseDto(
                 savedSchedule.getId(),
                 savedSchedule.getTitle(),
@@ -40,8 +40,6 @@ public class ScheduleService {
         );
     }
 
-
-//    할일 제목, 할일 내용, 댓글 개수, 일정 작성일, 일정 수정일, 일정 작성 유저명 필드를 조회합니다.
     @Transactional(readOnly = true)
     public CustomResponsePage<FindAllScheduleResponseDto> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -54,7 +52,7 @@ public class ScheduleService {
                     return new FindAllScheduleResponseDto(
                             schedule.getTitle(),
                             schedule.getContents(),
-                            countComment,
+                            countComment, //댓글 개수
                             schedule.getCreatedAt(),
                             schedule.getModifiedAt(),
                             member.getName()
@@ -63,48 +61,55 @@ public class ScheduleService {
         return new CustomResponsePage<>(dtoPage);
     }
 
-//    @Transactional(readOnly = true)
-//    public List<ScheduleResponseDto> findAll() {
-//
-//        return scheduleRepository.findAll()
-//                .stream()
-//                .map(ScheduleResponseDto::toDto)
-//                .toList();
-//    }
-
     @Transactional(readOnly = true)
     public ScheduleResponseDto findById(Long id) {
-
-        Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
-
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("id를 찾을 수 없습니다.")
+        );
         return new ScheduleResponseDto(
-                findSchedule.getId(),
-                findSchedule.getTitle(),
-                findSchedule.getContents(),
-                findSchedule.getMember().getName(),
-                findSchedule.getMember().getEmail(),
-                findSchedule.getCreatedAt(),
-                findSchedule.getModifiedAt()
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContents(),
+                schedule.getMember().getName(),
+                schedule.getMember().getEmail(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt()
         );
     }
 
     @Transactional(readOnly = true)
-    public Member findMember(Long id) {
-        Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
-        return findSchedule.getMember();
-    }
-
-    @Transactional(readOnly = true)
     public Schedule findSchedule(Long scheduleId) {
-        return scheduleRepository.findByIdOrElseThrow(scheduleId);
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalArgumentException("id를 찾을 수 없습니다.")
+        );
+        return schedule;
     }
 
     @Transactional
-    public void updateTitleContents(Long id, String title, String contents) {
+    public ScheduleResponseDto updateTitleContents(Long id, String title, String contents, Member loginMember) {
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("id를 찾을 수 없습니다.")
+        );
+        Long findMemberId = schedule.getMember().getId();
+        log.info("fineMemberId={}",findMemberId);
+        log.info("loginMember.getId()={}",loginMember.getId());
 
-        Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
+        // 작성자만 수정 가능
+        if (loginMember.getId() != findMemberId){
+            throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
+        }
 
-        findSchedule.updateTitleContents(title, contents);
+        schedule.updateTitleContents(title, contents);
+
+        return new ScheduleResponseDto(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContents(),
+                schedule.getMember().getName(),
+                schedule.getMember().getEmail(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt()
+        );
     }
 
     @Transactional

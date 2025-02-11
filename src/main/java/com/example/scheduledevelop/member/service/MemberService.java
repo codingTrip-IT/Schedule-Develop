@@ -36,7 +36,6 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public List<MemberResponseDto> findAll() {
-
         return memberRepository.findAll()
                 .stream()
                 .map(MemberResponseDto::toDto)
@@ -59,9 +58,7 @@ public class MemberService {
 
     @Transactional
     public void updateNameAndEmail(Long id, String name, String email) {
-
         Member findMember = memberRepository.findByIdOrElseThrow(id);
-
         findMember.updateNameAndEmail(name,email);
     }
 
