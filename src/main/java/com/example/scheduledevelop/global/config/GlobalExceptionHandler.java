@@ -1,5 +1,6 @@
-package com.example.scheduledevelop.global.exception;
+package com.example.scheduledevelop.global.config;
 
+import com.example.scheduledevelop.global.exception.ApplicationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

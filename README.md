@@ -1,7 +1,7 @@
 ## 👉🏼 일정관리(Schedule) Develop 개인과제
 
 ### 🙋‍♀️ 일정관리(Schedule) Develop 과제 설명
-- **일정관리(Schedule) Develop 과제**는 **<u>Spring을 활용하여 일정 관리 앱 Develop한 버전으로 구현</u>**한 과제입니다.
+- **일정관리(Schedule) Develop 과제**는 <u>Spring을 활용하여 일정 관리 앱을 Develop한 버전으로 구현</u>한 과제입니다.
 - **작성자 : 조예인**
 
 
@@ -16,6 +16,8 @@
     - [Lv 4](#Lv-4)
     - [Lv 5](#Lv-5)
     - [Lv 6](#Lv-6)
+    - [Lv 7](#Lv-7)
+    - [Lv 8](#Lv-8)
 
 4. [💥 한계점](#-한계점)
 5. [📚 STACKS](#-STACKS)
@@ -24,32 +26,49 @@
 <br>   
 
 ## 👩🏻‍ API 명세
+### 회원 API
+ 기능               | Method | URL             | Request              | Response | 상태코드    
+|------------------|--------|-----------------|----------------------|----------|---------|
+| 회원 생성(회원 가입)     | POST   | /members/signup | 요청 body              | 등록 정보    | 201 CREATED |
+| 전체 회원 조회         | GET    | /members          | 요청 param             | 다건 응답 정보 | 200: OK |
+| 선택 회원 조회         | GET    | /members/{memberId} | path memberId        | 단건 응답 정보 | 200: OK |
+| 선택 회원 <br/>회원명,이메일 수정 | PATCH    | /members/{memberId} | path memberId, 요청 body | 수정 정보    | 200: OK |
+| 선택 회원 <br/>비밀번호 수정    | PATCH    | /members/{memberId}/password | path memberId, 요청 body | 수정 정보    | 200: OK |
+| 선택 회원 삭제         | DELETE    | /members/{memberId} | path memberId           | -        | 200: OK |
+
+
 ### 일정 API
- 기능           | Method | URL                     | Request  | Response | 상태코드      
-|--------------|--------|-------------------------|----------|----------|-----------|
-| 일정 생성        | POST   | /schedules              | 요청 body  | 등록 정보    | 201: 정상등록 |
-| 전체 일정 조회     | GET    | /schedules              | 요청 param | 다건 응답 정보 | 200: 정상조회 |
-| 전체 일정 조회 페이징 | GET    | /schedules/paging       | 요청 param | 다건 응답 정보 | 200: 정상조회 |
-| 선택 일정 조회     | GET    | /schedules/{scheduleId} | -        | 단건 응답 정보 | 200: 정상조회 |
-| 선택 일정 수정     | PATCH  | /schedules/{scheduleId} | 요청 body  | 수정 정보    | 200: 정상수정 |
-| 선택 일정 삭제     | DELETE | /schedules/{scheduleId} | 요청 body  | -        | 200: 정상삭제 |
+ 기능           | Method | URL                     | Request                  | Response | 상태코드       
+|--------------|--------|-------------------------|--------------------------|----------|------------|
+| 일정 생성        | POST   | /schedules              | 요청 body                  | 등록 정보    | 201 CREATED |
+| 전체 일정 조회     | GET    | /schedules              | 요청 param(페이지 번호, 크기)     | 다건 응답 정보 | 200: OK  |
+| 선택 일정 조회     | GET    | /schedules/{scheduleId} | path scheduleId          | 단건 응답 정보 | 200: OK  |
+| 선택 일정 수정     | PATCH  | /schedules/{scheduleId} | path scheduleId, 요청 body | 수정 정보    | 200: OK  |
+| 선택 일정 삭제     | DELETE | /schedules/{scheduleId} | path scheduleId          | -        | 200: OK   |
 
 
-### 사용자(작성자) API
- 기능        | Method | URL               | Request  | Response | 상태코드      
-|-----------|--------|-------------------|----------|----------|-----------|
-| 사용자 생성    | POST   | /users            | 요청 body  | 등록 정보    | 201: 정상등록 |
-| 전체 사용자 조회 | GET    | /users            | 요청 param | 다건 응답 정보 | 200: 정상조회 |
-| 선택 사용자 조회 | GET    | /users/{userId}   | -        | 단건 응답 정보 | 200: 정상조회 |
-| 선택 사용자 수정 | PATCH    | /users/{userId} | 요청 body  | 수정 정보    | 200: 정상수정 |
-| 선택 사용자 삭제   | DELETE    | /users/{userId} | -        | -        | 200: 정상삭제 |
+### 로그인/로그아웃 API
+ 기능   | Method | URL     | Request | Response | 상태코드         
+|------|--------|---------|---------|----------|--------------|
+| 로그인  | POST   | /login  | 요청 body | -        | 200: OK      |
+| 로그아웃 | POST    | /logout | -       | -        | 200: OK |
+
+### 댓글 API
+ 기능              | Method | URL                     | Request    | Response | 상태코드      
+|-----------------|--------|-------------------------|------------|----------|-----------|
+| 댓글 생성(해당 일정)           | POST   | /schedules/{scheduleId}/comments  | path scheduleId, 요청 body | 등록 정보    | 201 CREATED |
+| 전체 댓글 조회(해당 일정) | GET    | /schedules/{scheduleId}/comments              | path scheduleId | 다건 응답 정보 | 200: OK |
+| 선택 댓글 조회        | GET    | /schedules/comments/{commentId} | path commentId | 단건 응답 정보 | 200: OK |
+| 선택 댓글 수정        | PATCH  | /schedules/comments/{commentId} | path commentId, 요청 body | 수정 정보    | 200: OK |
+| 선택 댓글 삭제        | DELETE | /schedules/comments/{commentId} | path commentId | -        | 200: OK |
 
 ## 👩 ERD
-<img width="642" alt="Image" src="https://github.com/user-attachments/assets/d73d8de9-918b-41b3-9905-32a0d0f67667" />
+<img width="707" alt="Image" src="https://github.com/user-attachments/assets/0cdc04aa-b139-4726-97c1-d82f12201d1f" />
 
 ## 👩🏻‍🏫 레벨별 설명
 ### Lv 1
-### 일정 생성 및 조회
+
+### 일정 CRUD
 - 일정 생성(일정 작성하기)
 - 실행 예시
 ```json 
@@ -112,10 +131,103 @@ GET : localhost:8080/schedules/4
     "updatedAt": "2025-02-03T16:19:37"
 }
 ```
+- 선택한 일정 수정
+- 실행 예시
+```json 
+PATCH : localhost:8080/schedules/4
+요청 body :
+{
+    "todo": "하루 1번 공부하기",
+    "password":"2222"
+}
+
+응답 body :
+{
+    "scheduleId": 4,
+    "todo": "하루 1번 공부하기",
+    "userId": 2,
+    "userName": "spring2",
+    "createdAt": "2025-02-03T16:19:37",
+    "updatedAt": "2025-02-03T18:39:56"
+}
+```
+- 선택한 일정 삭제
+- soft delete 사용
+- 실행 예시
+```json 
+DELETE : localhost:8080/schedules/4
+요청 body :
+{
+    "password":"2222" 
+}
+        
+응답 : 200 OK
+```
 
 ### Lv 2
-### 일정 수정 및 삭제
+### 유저 CRUD
+- 일정 생성(일정 작성하기)
+- 실행 예시
+```json 
+POST : localhost:8080/schedules
+요청 body :
+{
+    "todo" : "jdbc공부3",
+    "userId" : 4,
+    "password" : "4444"
+}
+        
+응답 body :
+{
+    "scheduleId": 21,
+    "todo": "jdbc공부3",
+    "userId": 4,
+    "createdAt": "2025-02-03T18:19:57.370917",
+    "updatedAt": "2025-02-03T18:19:57.370917"
+}
+```
+- 전체 일정 조회(등록된 일정 불러오기)
+- 실행 예시
+```json 
+GET : localhost:8080/schedules?userId=2&updatedAt=2025-02-03
+요청 param :
+userId=2
+updatedAt=2025-02-03
 
+응답 body :
+[{
+    "scheduleId": 17,
+    "todo": "스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공스프링공부스프링공부스프링공부스프링공부스프링공부1",
+    "userId": 2,
+    "userName": "spring2",
+    "createdAt": "2025-02-03T17:20:57",
+    "updatedAt": "2025-02-03T17:20:57"
+},
+{
+    "scheduleId": 16,
+    "todo": "스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공스프링공부스프링공부스프링공부스프링공부스프링공부",
+    "userId": 2,
+    "userName": "spring2",
+    "createdAt": "2025-02-03T17:20:53",
+    "updatedAt": "2025-02-03T17:20:53"
+}]
+```
+
+- 선택 일정 조회(선택한 일정 정보 불러오기)
+- 실행 예시
+```json 
+GET : localhost:8080/schedules/4
+        
+응답 body :
+{
+    "scheduleId": 4,
+    "todo": "스프링공부하기",
+    "userId": 2,
+    "userName": "spring2",
+    "createdAt": "2025-02-03T16:19:37",
+    "updatedAt": "2025-02-03T16:19:37"
+}
+```
 - 선택한 일정 수정
 - 실행 예시
 ```json 
@@ -150,7 +262,7 @@ DELETE : localhost:8080/schedules/4
 ```
 
 ### Lv 3
-### 연관 관계 설정
+### 회원가입
 - 작성자와 일정의 연결
 - 사용자(작성자) 테이블을 생성 -> 일정 테이블에 FK를 생성해 연관관계 설정
 - 실행 예시(사용자 CRUD 중 생성 예시)
@@ -172,7 +284,7 @@ POST : localhost:8080/users
 }
 ```
 ### Lv 4
-### 페이지네이션
+### 로그인(인증)
 - 등록된 일정 목록을 `페이지 번호`와 `크기`를 기준으로 모두 조회
 - 실행 예시
 ```json 
@@ -211,7 +323,7 @@ pageSize=3
 ```
 
 ### Lv 5
-### 예외 발생 처리
+### 다양한 예외처리 적용하기
 - 수정, 삭제 시 요청할 때 보내는 `비밀번호`가 일치하지 않을 때 예외가 발생합니다.
 - 실행 예시
 ```json 
@@ -272,7 +384,7 @@ GET : localhost:8080/schedules/4
 }
 ```
 ### Lv 6
-### null 체크 및 특정 패턴에 대한 검증 수행
+### 비밀번호 암호화
 - 할일은 최대 200자 이내로 제한, 필수값 처리
 - 실행 예시
 ```json 
@@ -327,10 +439,53 @@ GET : localhost:8080/users
     "path": "/users"
 }
 ```
+### Lv 7
+### 댓글 CRUD
+- 할일은 최대 200자 이내로 제한, 필수값 처리
+- 실행 예시
+```json 
+GET : localhost:8080/schedules
+요청 body :
+{
+    "todo" : "스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부",
+    "userId" : 4,
+    "password" : "4444"
+}
+응답 body :
+{
+    "timestamp": "2025-02-03T09:59:07.772+00:00",
+    "status": 400,
+    "error": "Bad Request",
+    "path": "/schedules"
+}
+```
+
+### Lv 8
+### 일정 페이징 조회
+- 할일은 최대 200자 이내로 제한, 필수값 처리
+- 실행 예시
+```json 
+GET : localhost:8080/schedules
+요청 body :
+{
+    "todo" : "스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부스프링공스프링공부스프링공부스프링공부스프링공부스프링공부스프링공부",
+    "userId" : 4,
+    "password" : "4444"
+}
+응답 body :
+{
+    "timestamp": "2025-02-03T09:59:07.772+00:00",
+    "status": 400,
+    "error": "Bad Request",
+    "path": "/schedules"
+}
+```
+
+
+
 ## 💥 한계점
 
-- swagger 활용하기
- : 다음에는 swagger를 활용해서 API 문서를 작성해보고 싶습니다.
+- 연관 soft delete
 
 
 ## 📚 STACKS

@@ -2,7 +2,6 @@ package com.example.scheduledevelop.member.controller;
 
 import com.example.scheduledevelop.global.SessionConst;
 import com.example.scheduledevelop.member.service.MemberService;
-import com.example.scheduledevelop.global.config.WebConfig;
 import com.example.scheduledevelop.member.entity.Member;
 import com.example.scheduledevelop.member.dto.SignUpRequestDto;
 import com.example.scheduledevelop.member.dto.UpdateNameAndEmailRequestDto;
@@ -22,7 +21,6 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
-    private final WebConfig.PasswordEncoder passwordEncoder;
 
     @PostMapping("/members/signup")
     public ResponseEntity<SingUpResponseDto> createMember(@Valid @RequestBody SignUpRequestDto requestDto){
