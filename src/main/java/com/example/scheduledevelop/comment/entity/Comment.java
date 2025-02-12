@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * Comment : 댓글 엔티티(BaseEntity 상속받음)
- * - 필드 : 댓글 id, 댓글 내용, 회원, 일정
+ * - 필드 : 댓글 id, 댓글 내용, 회원과 연관관계, 일정과 연관관계
  */
 @Getter
 @Entity

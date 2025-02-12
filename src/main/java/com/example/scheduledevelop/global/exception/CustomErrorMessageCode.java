@@ -3,6 +3,9 @@ package com.example.scheduledevelop.global.exception;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * CustomErrorMessageCode: 커스텀한 예외처리 메시지 코드(Enum)
+ */
 @Getter
 @RequiredArgsConstructor
 public enum CustomErrorMessageCode {

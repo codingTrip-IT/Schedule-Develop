@@ -9,6 +9,10 @@ import org.springframework.util.PatternMatchUtils;
 
 import java.io.IOException;
 
+/**
+ * LoginFilter: 사용자가 로그인을 했는지 확인하는 필터 (Filter 인터페이스 구현)
+ * 회원가입, 로그인 요청은 인증 처리에서 제외
+ */
 @Slf4j
 public class LoginFilter implements Filter {
 
@@ -34,11 +38,15 @@ public class LoginFilter implements Filter {
 
         // 로그인 성공 로직
         log.info("로그인에 성공했습니다.");
-
         chain.doFilter(request,response);
 
     }
 
+    /**
+     * 요청 URI가 리스트에 포함되는지 확인하는 메서드
+     * @param requestURI 요청 URI
+     * @return 화이트리스트에 포함되면 true, 그렇지 않으면 false
+     */
     private boolean isWhiteList(String requestURI) {
         return PatternMatchUtils.simpleMatch(WHITE_LIST,requestURI);
     }

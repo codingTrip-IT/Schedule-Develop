@@ -58,20 +58,6 @@ public class CommentService {
     }
 
     /**
-     * 일정 id로 일정 조회
-     * @param scheduleId 일정 id
-     * 해당 id를 찾을 수 없는 경우, 404 예외처리(커스텀 예외처리 ID_NOT_FOUND)
-     * @return 일정 id에 해당하는 일정 반환
-     */
-    private Schedule getScheduleByIdOrElseThrow(Long scheduleId) {
-        return scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
-                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getStatus(),
-                                CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
-        );
-    }
-
-    /**
      * 댓글 목록 조회
      * @param scheduleId 일정 id
      * commentList: 일정 id에 해당하는 댓글 조회 리스트
@@ -126,14 +112,14 @@ public class CommentService {
      * @param contents 댓글 내용
      * @param loginMember 세션 로그인 멤버
      * getCommentByIdOrElseThrow : 댓글 id로 댓글 조회
-     * validateUserId : 본인(작성자) 검증 로직
-     * @return CommentResponseDto 댓글 응답 DTO 리스트 반환
+     * validateMemberId : 본인(작성자) 검증 로직
+     * @return CommentResponseDto 댓글 응답 DTO 반환
      */
     @Transactional
     public CommentResponseDto updateContents(Long commentId, String contents, Member loginMember) {
         Comment comment = getCommentByIdOrElseThrow(commentId);
 
-        validateUserId(loginMember, comment);
+        validateMemberId(loginMember, comment);
 
         log.info("댓글 수정 전={}", comment.getContents());
         comment.updateContents(contents);
@@ -156,19 +142,33 @@ public class CommentService {
      * @param commentId 댓글 id
      * @param loginMember 세션 로그인 멤버
      * getCommentByIdOrElseThrow : 댓글 id로 댓글 조회
-     * validateUserId : 본인(작성자) 검증 로직
+     * validateMemberId : 본인(작성자) 검증 로직
      */
     @Transactional
     public void delete(Long commentId, Member loginMember) {
         Comment comment = getCommentByIdOrElseThrow(commentId);
-        validateUserId(loginMember, comment);
+        validateMemberId(loginMember, comment);
         commentRepository.deleteById(commentId);
+    }
+
+    /**
+     * 일정 id로 일정 조회
+     * @param scheduleId 일정 id
+     * @exception ApplicationException 해당 id를 찾을 수 없는 경우, 404 예외처리(커스텀 예외처리 ID_NOT_FOUND)
+     * @return 일정 id에 해당하는 일정 반환
+     */
+    private Schedule getScheduleByIdOrElseThrow(Long scheduleId) {
+        return scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getStatus(),
+                                CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
+        );
     }
 
     /**
      * 댓글 id로 댓글 조회
      * @param commentId 댓글 id
-     * 해당 id를 찾을 수 없는 경우, 404 예외처리(커스텀 예외처리 ID_NOT_FOUND)
+     * @exception ApplicationException 해당 id를 찾을 수 없는 경우, 404 예외처리(커스텀 예외처리 ID_NOT_FOUND)
      * @return 일정 id에 해당하는 댓글 반환
      */
     private Comment getCommentByIdOrElseThrow(Long commentId) {
@@ -184,9 +184,9 @@ public class CommentService {
      * @param loginMember 세션 로그인 멤버
      * @param comment 댓글
      * loginMember(로그인 정보)의 id와 DB에서 조회한 id 비교
-     * 각각의 id가 불일치할 경우 403 예외처리(커스텀 예외처리 NOT_OWNER)
+     * @exception ApplicationException 각각의 id가 불일치할 경우 403 예외처리(커스텀 예외처리 NOT_OWNER)
      */
-    private static void validateUserId(Member loginMember, Comment comment) {
+    private static void validateMemberId(Member loginMember, Comment comment) {
         Long findMemberId = comment.getMember().getId();
 
         if (loginMember.getId() != findMemberId){

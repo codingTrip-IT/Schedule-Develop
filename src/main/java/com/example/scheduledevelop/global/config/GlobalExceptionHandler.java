@@ -28,7 +28,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<Map<String, Object>> handleApplicationException(ApplicationException ex) {
-//        return getErrorResponse(ex.getStatus(), ex.getMessage());
         // 클라이언트에게 반환할 오류 응답 객체 생성
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("code", ex.getErrorMessageCode().getCode());
@@ -49,6 +48,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(errorResponse);
     }
 
+    /**
+     * ValidationException 예외처리 핸들러
+     * - Spring의 @Valid 또는 @Validated 어노테이션을 사용한 요청 데이터 검증에서 발생하는 예외를 처리
+     * - 예: DTO의 필드 값이 유효성 검사(@NotBlank, @Size 등)를 통과하지 못한 경우 발생
+     * @param ex MethodArgumentNotValidException 예외 객체 (검증 실패 정보 포함)
+     * @return HTTP 400 BAD_REQUEST 응답과 함께 첫 번째 검증 실패 메시지를 반환
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationException(MethodArgumentNotValidException ex) {
         String firstErrorMessage = ex.getBindingResult()
@@ -61,6 +67,12 @@ public class GlobalExceptionHandler {
         return getErrorResponse(HttpStatus.BAD_REQUEST, firstErrorMessage);
     }
 
+    /**
+     * 에러 응답을 생성하는 메서드
+     * @param status HTTP 상태 코드
+     * @param message 클라이언트에 전달할 에러 메시지
+     * @return ResponseEntity<Map<String, Object>> 형식의 에러 응답
+     */
     private ResponseEntity<Map<String, Object>> getErrorResponse(HttpStatus status, String message) {
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("status", status.name());

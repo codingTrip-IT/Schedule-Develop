@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Member : 회원 엔티티(BaseEntity 상속받음)
+ * - 필드 : 회원 id, 회원명, 이메일, 비밀번호
+ */
 @Getter
 @Entity
 @Table(name = "member")

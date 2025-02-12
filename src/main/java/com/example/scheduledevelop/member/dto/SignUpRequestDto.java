@@ -5,6 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
+/**
+ * SignUpRequestDto : 회원 생성 요청 DTO
+ * - 필드 : 회원명(필수값, 10자 이내 인증 처리), 이메일(이메일 형식, 필수값 인증 처리), 비밀번호(필수값, 20자 이내 인증 처리)
+ */
 @Getter
 public class SignUpRequestDto {
 
@@ -17,6 +21,7 @@ public class SignUpRequestDto {
     private final String email;
 
     @NotBlank(message = "password는 필수값입니다.")
+    @Size(max = 20,message = "password 20자 이내로 입력하세요.")
     private final String password;
 
     public SignUpRequestDto(String name, String email, String password) {
