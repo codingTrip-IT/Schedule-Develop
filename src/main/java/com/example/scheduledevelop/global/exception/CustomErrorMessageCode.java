@@ -11,6 +11,6 @@ public enum CustomErrorMessageCode {
     NOT_OWNER("NOT_OWNER", "본인(작성자)이 아닌 경우 권한이 없습니다."),
     INVALID_PASSWORD("INVALID_PASSWORD", "비밀번호가 일치하지 않습니다.");
 
-    private final String code;
+    private final String status;
     private final String message;
 }

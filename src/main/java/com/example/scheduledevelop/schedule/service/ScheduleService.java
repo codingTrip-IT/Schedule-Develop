@@ -30,9 +30,9 @@ public class ScheduleService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public ScheduleResponseDto save(String title, String contents, Member member) {
+    public ScheduleResponseDto save(String title, String contents, Member loginMember) {
 
-        Schedule schedule = new Schedule(title, contents, member);
+        Schedule schedule = new Schedule(title, contents, loginMember);
         Schedule savedSchedule = scheduleRepository.save(schedule);
 
         return new ScheduleResponseDto(
@@ -72,7 +72,7 @@ public class ScheduleService {
     public ScheduleResponseDto findById(Long id) {
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(
                 () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
-                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getStatus(),
                                              CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
         return new ScheduleResponseDto(
@@ -100,7 +100,7 @@ public class ScheduleService {
     public ScheduleResponseDto updateTitleContents(Long id, String title, String contents, Member loginMember) {
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(
                 () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
-                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getStatus(),
                                              CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
         Long findMemberId = schedule.getMember().getId();
@@ -112,7 +112,7 @@ public class ScheduleService {
 //            throw new IllegalArgumentException("해당 일정의 작성자가 아닙니다.");
 //            new ResponseEntity<>(HttpStatus.NOT_FOUND);
             throw new ApplicationException(ErrorMessageCode.FORBIDDEN,
-                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getCode(),
+                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getStatus(),
                                          CustomErrorMessageCode.NOT_OWNER.getMessage())));
         }
 
@@ -137,7 +137,7 @@ public class ScheduleService {
 //        }
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(
                 () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
-                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getStatus(),
                                              CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
 
@@ -148,7 +148,7 @@ public class ScheduleService {
         // 작성자만 수정 가능
         if (loginMember.getId() != findMemberId){
             throw new ApplicationException(ErrorMessageCode.FORBIDDEN,
-                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getCode(),
+                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getStatus(),
                                          CustomErrorMessageCode.NOT_OWNER.getMessage())));
         }
 

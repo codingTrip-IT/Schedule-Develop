@@ -31,7 +31,7 @@ public class CommentService {
     public CommentSaveResponseDto save(String contents, Long scheduleId, Member loginMember) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
                 () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
-                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getStatus(),
                                              CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
 
@@ -75,7 +75,7 @@ public class CommentService {
     public CommentResponseDto findById(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
-                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getStatus(),
                                              CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
 
@@ -95,7 +95,7 @@ public class CommentService {
     public CommentResponseDto updateContents(Long commentId, String contents, Member loginMember) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
-                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getStatus(),
                                              CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
 
@@ -104,7 +104,7 @@ public class CommentService {
         // 작성자만 수정 가능
         if (loginMember.getId() != findMemberId){
             throw new ApplicationException(ErrorMessageCode.FORBIDDEN,
-                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getCode(),
+                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getStatus(),
                             CustomErrorMessageCode.NOT_OWNER.getMessage())));
         }
 
@@ -133,7 +133,7 @@ public class CommentService {
 //        }
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
-                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                        List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getStatus(),
                                 CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
 
@@ -142,7 +142,7 @@ public class CommentService {
         // 작성자만 수정 가능
         if (loginMember.getId() != findMemberId){
             throw new ApplicationException(ErrorMessageCode.FORBIDDEN,
-                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getCode(),
+                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getStatus(),
                             CustomErrorMessageCode.NOT_OWNER.getMessage())));
         }
         commentRepository.deleteById(commentId);

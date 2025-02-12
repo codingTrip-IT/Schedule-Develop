@@ -55,7 +55,7 @@ public class MemberService {
 
         Member member = memberRepository.findById(id).orElseThrow(
                 () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
-                List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getStatus(),
                                      CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
 
@@ -66,14 +66,14 @@ public class MemberService {
     public MemberResponseDto updateNameAndEmail(Long id, String name, String email, Member loginMember) {
         Member member = memberRepository.findById(id).orElseThrow(
                 () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
-                List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getStatus(),
                                      CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
 
         // 본인만 수정 가능
         if (!loginMember.getId().equals(id)){
             throw new ApplicationException(ErrorMessageCode.FORBIDDEN,
-                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getCode(),
+                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getStatus(),
                             CustomErrorMessageCode.NOT_OWNER.getMessage())));
         }
 
@@ -90,7 +90,7 @@ public class MemberService {
     public void updatePassword(Long id, String oldPassword, String newPassword, Member loginMember) {
         Member member = memberRepository.findById(id).orElseThrow(
                 () -> new ApplicationException(ErrorMessageCode.NOT_FOUND,
-                List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getCode(),
+                List.of(new ApiError(CustomErrorMessageCode.ID_NOT_FOUND.getStatus(),
                                      CustomErrorMessageCode.ID_NOT_FOUND.getMessage())))
         );
 
@@ -100,7 +100,7 @@ public class MemberService {
         if (!passwordEncoder.matches(oldPassword,DbPassword)){
 //            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"비밀번호가 일치하지 않습니다.");
             throw new ApplicationException(ErrorMessageCode.UNAUTHORIZED,
-                    List.of(new ApiError(CustomErrorMessageCode.INVALID_PASSWORD.getCode(),
+                    List.of(new ApiError(CustomErrorMessageCode.INVALID_PASSWORD.getStatus(),
                             CustomErrorMessageCode.INVALID_PASSWORD.getMessage())));
         }
 
@@ -122,7 +122,7 @@ public class MemberService {
         // 본인만 삭제 가능
         if (!loginMember.getId().equals(id)) {
             throw new ApplicationException(ErrorMessageCode.FORBIDDEN,
-                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getCode(),
+                    List.of(new ApiError(CustomErrorMessageCode.NOT_OWNER.getStatus(),
                                          CustomErrorMessageCode.NOT_OWNER.getMessage())));
         }
 
