@@ -32,26 +32,27 @@ public class AuthController {
     /**
      * 로그인 기능
      * @param requestDto 사용자가 입력한 이메일과 비밀번호 정보
-     * @param request HTTP 요청 객체 (세션 관리용)
+     * @param request HTTP 요청 객체
      * @return 인증 성공 시 HTTP 200 OK, 실패 시 HTTP 401 UNAUTHORIZED 반환
      */
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDto requestDto, HttpServletRequest request){
 
        Member member= authService.findByEmail(requestDto.getEmail());
-        // 회원 정보가 없으면 로그인 실패 (401 반환)
+
        if (member == null){
-           return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+           return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); // 회원 정보가 없으면 로그인 실패 (401 반환)
        }
-       String encyptPassword = member.getPassword();
 
-       if (passwordEncoder.matches(requestDto.getPassword(),encyptPassword)){
-            Member loginMember = authService.login(requestDto.getEmail(), encyptPassword);
+       String encryptPassword = member.getPassword(); // DB에서 암호화된 비밀번호
 
-            //로그인 성공 처리 : 세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성
+       if (passwordEncoder.matches(requestDto.getPassword(),encryptPassword)){
+            Member loginMember = authService.login(requestDto.getEmail(), encryptPassword);
+
+           //로그인 성공 처리 : 세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성
             HttpSession session = request.getSession();
 
-            //세션에 로그인 회원 정보 보관
+           //세션에 로그인 회원 정보 보관
             session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
             return new ResponseEntity<>(HttpStatus.OK);

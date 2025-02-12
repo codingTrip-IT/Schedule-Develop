@@ -4,6 +4,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
+/**
+ * LoginRequestDto : 로그인 요청 DTO
+ * - 필드 : 이메일(이메일 형식, 필수값 인증 처리), 비밀번호(필수값 인증처리)
+ */
 @Getter
 public class LoginRequestDto {
 

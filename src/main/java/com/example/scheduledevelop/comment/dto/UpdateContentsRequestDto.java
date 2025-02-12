@@ -4,6 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
+/**
+ * UpdateContentsRequestDto : 댓글 수정 요청 DTO
+ * - 필드 : 댓글 내용(필수값, 200자 이내 인증 처리)
+ */
 @Getter
 public class UpdateContentsRequestDto {
 

@@ -4,6 +4,10 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+/**
+ * CommentSaveResponseDto : 댓글 생성 응답 DTO
+ * - 필드 : 댓글 id, 댓글 내용, 일정 제목, 일정 내용, 회원명, 회원 이메일, 생성일, 수정일
+ */
 @Getter
 public class CommentSaveResponseDto {
 
