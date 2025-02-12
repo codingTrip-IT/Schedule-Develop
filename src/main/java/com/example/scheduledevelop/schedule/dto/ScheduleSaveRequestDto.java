@@ -4,6 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
+/**
+ * ScheduleSaveRequestDto : 일정 생성 요청 DTO
+ * - 필드 : 일정 제목(필수값, 20자 이내 인증 처리), 일정 내용(필수값, 200자 이내 인증 처리)
+ */
 @Getter
 public class ScheduleSaveRequestDto {
 

@@ -32,15 +32,15 @@ public class MemberService {
      * @param name 회원명
      * @param email 이메일
      * @param password 비밀번호
-     * encyptPassword : 비밀번호 암호화 후 저장
+     * encryptPassword : 비밀번호 암호화 후 저장
      * @return SingUpResponseDto 회원 생성 응답 DTO 반환
      */
     @Transactional
     public SingUpResponseDto save(String name, String email, String password) {
 
-        String encyptPassword = passwordEncoder.encode(password); //비밀번호 암호화
+        String encryptPassword = passwordEncoder.encode(password); //비밀번호 암호화
 
-        Member member = new Member(name, email, encyptPassword);
+        Member member = new Member(name, email, encryptPassword);
         Member savedMember = memberRepository.save(member);
 
         return new SingUpResponseDto(savedMember.getId(),savedMember.getName(),savedMember.getEmail());
@@ -92,6 +92,7 @@ public class MemberService {
         );
     }
 
+    //todo 리팩토링 하기
     /**
      * 회원 선택 수정(비밀번호 수정)
      * @param id 회원 id
@@ -119,7 +120,6 @@ public class MemberService {
         member.updatePassword(encryptPassword);
     }
 
-    //todo 작동 잘되는 지 확인
     /**
      * 회원 선택 삭제
      * @param id 회원 id

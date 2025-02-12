@@ -6,6 +6,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Schedule : 일정 엔티티(BaseEntity 상속받음)
+ * - 필드 : 일정 id, 일정 제목, 일정 내용, 회원과 연관관계
+ */
 @Getter
 @Entity
 @Table(name = "schedule")

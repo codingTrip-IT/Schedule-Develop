@@ -4,6 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
+/**
+ * UpdateTitleAndContentsRequestDto : 일정 수정 요청 DTO(제목, 내용)
+ * - 필드 : 일정 제목(필수값, 20자 이내 인증 처리), 일정 내용(필수값, 200자 이내 인증 처리)
+ */
 @Getter
 public class UpdateTitleAndContentsRequestDto {
 

@@ -37,6 +37,7 @@ public class CommentService {
      * @param contents 뎃글 내용
      * @param scheduleId 일정 id
      * @param loginMember 세션 로그인 멤버
+     * getScheduleByIdOrElseThrow : 일정 id로 일정 조회
      * @return CommentSaveResponseDto 댓글 생성 응답 DTO 반환
      */
     @Transactional
@@ -138,7 +139,7 @@ public class CommentService {
     }
 
     /**
-     * 댓글 선택 수정(내용만 수정)
+     * 댓글 선택 삭제
      * @param commentId 댓글 id
      * @param loginMember 세션 로그인 멤버
      * getCommentByIdOrElseThrow : 댓글 id로 댓글 조회
