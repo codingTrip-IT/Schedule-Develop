@@ -27,14 +27,14 @@
 
 ## 👩🏻‍ API 명세
 ### 회원 API
- 기능               | Method | URL             | Request              | Response | 상태코드    
-|------------------|--------|-----------------|----------------------|----------|---------|
-| 회원 생성(회원 가입)     | POST   | /members/signup | 요청 body              | 등록 정보    | 201 CREATED |
-| 전체 회원 조회         | GET    | /members          | 요청 param             | 다건 응답 정보 | 200: OK |
-| 선택 회원 조회         | GET    | /members/{memberId} | path memberId        | 단건 응답 정보 | 200: OK |
+ 기능               | Method | URL             | Request                | Response | 상태코드    
+|------------------|--------|-----------------|------------------------|----------|---------|
+| 회원 생성(회원 가입)     | POST   | /members/signup | 요청 body                | 등록 정보    | 201 CREATED |
+| 전체 회원 조회         | GET    | /members          | -                      | 다건 응답 정보 | 200: OK |
+| 선택 회원 조회         | GET    | /members/{memberId} | path memberId          | 단건 응답 정보 | 200: OK |
 | 선택 회원 <br/>회원명,이메일 수정 | PATCH    | /members/{memberId} | path memberId, 요청 body | 수정 정보    | 200: OK |
-| 선택 회원 <br/>비밀번호 수정    | PATCH    | /members/{memberId}/password | path memberId, 요청 body | 수정 정보    | 200: OK |
-| 선택 회원 삭제         | DELETE    | /members/{memberId} | path memberId           | -        | 200: OK |
+| 선택 회원 <br/>비밀번호 수정    | PATCH    | /members/{memberId}/password | path memberId, 요청 body | -        | 200: OK |
+| 선택 회원 삭제         | DELETE    | /members/{memberId} | path memberId          | -        | 200: OK |
 
 
 ### 일정 API
@@ -56,8 +56,8 @@
 ### 댓글 API
  기능              | Method | URL                     | Request    | Response | 상태코드      
 |-----------------|--------|-------------------------|------------|----------|-----------|
-| 댓글 생성(해당 일정)           | POST   | /schedules/{scheduleId}/comments  | path scheduleId, 요청 body | 등록 정보    | 201 CREATED |
-| 전체 댓글 조회(해당 일정) | GET    | /schedules/{scheduleId}/comments              | path scheduleId | 다건 응답 정보 | 200: OK |
+| 댓글 생성(선택 일정)    | POST   | /schedules/{scheduleId}/comments  | path scheduleId, 요청 body | 등록 정보    | 201 CREATED |
+| 전체 댓글 조회(선택 일정) | GET    | /schedules/{scheduleId}/comments              | path scheduleId | 다건 응답 정보 | 200: OK |
 | 선택 댓글 조회        | GET    | /schedules/comments/{commentId} | path commentId | 단건 응답 정보 | 200: OK |
 | 선택 댓글 수정        | PATCH  | /schedules/comments/{commentId} | path commentId, 요청 body | 수정 정보    | 200: OK |
 | 선택 댓글 삭제        | DELETE | /schedules/comments/{commentId} | path commentId | -        | 200: OK |
@@ -143,8 +143,7 @@ PATCH : localhost:8080/schedules/1
     "id": 1,
     "title": "스프링",
     "contents": "스케줄 생성 과제하기",
-    "memberName": "study",
-    "memberEmail": "codingtrip@naver.com",
+    "username" : "study"
     "createdAt": "2025-02-12T14:36:35.976473",
     "modifiedAt": "2025-02-12T14:36:35.976473"
 }
@@ -258,7 +257,7 @@ POST : localhost:8080/members/signup
 }
 ```
 
-- 선택한 유저 수정(비밀번호)
+- 선택한 유저 비밀번호 수정
 - 실행 예시
 ```json 
 PATCH : localhost:8080/members/1/password
