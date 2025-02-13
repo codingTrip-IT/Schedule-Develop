@@ -26,7 +26,7 @@ public class LoginFilter implements Filter {
 
         log.info("로그인 필터 로직 실행");
 
-        // whiteListURL에 포함된 경우 true 반환 -> !true = false
+        // WHITE_LIST URL에 포함된 경우 true 반환 -> !true = false
         if (!isWhiteList(requestURI)){
             log.info("인증 체크 로직 실행 {}", requestURI);
             HttpSession session = httpRequest.getSession(false);

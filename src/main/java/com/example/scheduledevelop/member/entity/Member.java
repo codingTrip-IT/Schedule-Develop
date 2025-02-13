@@ -34,11 +34,20 @@ public class Member extends BaseEntity {
         this.password = password;
     }
 
-    public void updateNameAndEmail(String name,String email) {
+    /**
+     * 회원명, 이메일 수정
+     * @param name 회원명
+     * @param email 이메일
+     */
+    public void updateNameAndEmail(String name, String email) {
         this.name = name;
         this.email = email;
     }
 
+    /**
+     * 비밀번호 수정
+     * @param password 비밀번호
+     */
     public void updatePassword(String password) {
         this.password = password ;
     }

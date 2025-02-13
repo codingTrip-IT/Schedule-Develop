@@ -37,6 +37,10 @@ public class Comment extends BaseEntity {
         this.member = member;
     }
 
+    /**
+     * 댓글 내용 수정
+     * @param contents 댓글 내용
+     */
     public void updateContents(String contents) {
         this.contents = contents;
     }

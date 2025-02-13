@@ -3,7 +3,7 @@ package com.example.scheduledevelop.member.dto;
 import lombok.Getter;
 
 /**
- * MemberResponseDto : 회원 생성 응답 DTO
+ * SingUpResponseDto : 회원 생성 응답 DTO
  * - 필드 : 회원 id, 회원명, 회원 이메일
  */
 @Getter

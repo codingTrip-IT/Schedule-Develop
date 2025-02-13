@@ -14,19 +14,14 @@ public class SignUpRequestDto {
 
     @NotBlank(message = "name은 필수값입니다.")
     @Size(max = 10,message = "name은 10자 이내로 입력하세요.")
-    private final String name;
+    private String name;
 
     @Email(message = "email 형식이 올바르지 않습니다.")
     @NotBlank(message = "email은 필수값입니다.")
-    private final String email;
+    private String email;
 
     @NotBlank(message = "password는 필수값입니다.")
     @Size(max = 20,message = "password 20자 이내로 입력하세요.")
-    private final String password;
+    private String password;
 
-    public SignUpRequestDto(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
 }

@@ -119,7 +119,6 @@ public class CommentService {
     @Transactional
     public CommentResponseDto updateContents(Long commentId, String contents, Member loginMember) {
         Comment comment = getCommentByIdOrElseThrow(commentId);
-
         validateMemberId(loginMember, comment);
 
         log.info("댓글 수정 전={}", comment.getContents());

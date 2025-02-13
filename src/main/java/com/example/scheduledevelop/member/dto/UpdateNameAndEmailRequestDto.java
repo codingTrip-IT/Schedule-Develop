@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 /**
- * SignUpRequestDto : 회원 회원명, 이메일 수정 요청 DTO
+ * UpdateNameAndEmailRequestDto : 회원 회원명, 이메일 수정 요청 DTO
  * - 필드 : 회원명(필수값, 10자 이내 인증 처리), 이메일(이메일 형식, 필수값 인증 처리)
  */
 @Getter

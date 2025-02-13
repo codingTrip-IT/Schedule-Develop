@@ -26,7 +26,7 @@ public class CommentController {
 
     /**
      * 댓글 생성
-     * @param requestDto 사용자가 입력한 contents 정보
+     * @param requestDto 사용자가 입력한 댓글 내용 정보
      * @param scheduleId 일정 id
      * @param loginMember 세션 로그인 멤버
      * @return 성공 시 HTTP 201 CREATED
@@ -70,7 +70,7 @@ public class CommentController {
     /**
      * 댓글 선택 수정(내용만 수정)
      * @param commentId 댓글 id
-     * @param requestDto 사용자가 입력한 contents 정보
+     * @param requestDto 사용자가 입력한 댓글 내용 정보
      * @param loginMember 세션 로그인 멤버
      * @return 성공 시 HTTP 200 OK
      */

@@ -134,7 +134,7 @@ public class ScheduleService {
      * 일정 선택 삭제
      * @param id 일정 id
      * @param loginMember 세션 로그인 멤버
-     * getCommentByIdOrElseThrow : 일정 id로 일정 조회
+     * getScheduleByIdOrElseThrow : 일정 id로 일정 조회
      * validateMemberId : 본인(작성자) 검증 로직
      */
     @Transactional

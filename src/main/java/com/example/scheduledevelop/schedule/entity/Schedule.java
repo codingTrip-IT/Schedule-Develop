@@ -36,6 +36,11 @@ public class Schedule extends BaseEntity {
         this.member = member;
     }
 
+    /**
+     * 일정 제목, 내용 수정
+     * @param title 일정 제목
+     * @param contents 일정 내용
+     */
     public void updateTitleContents(String title, String contents) {
         this.title = title;
         this.contents = contents;

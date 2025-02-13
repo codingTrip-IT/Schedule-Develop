@@ -5,11 +5,11 @@ import lombok.Getter;
 
 /**
  * ApiError : 발생한 오류 정보를 담아 반환하는 클래스
- * - 필드 : 코드, 메시지
+ * - 필드 : 상태, 메시지
  */
 @Getter
 @AllArgsConstructor
 public class ApiError {
-    private String code;
+    private String status;
     private String message;
 }

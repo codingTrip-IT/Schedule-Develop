@@ -13,13 +13,9 @@ public class UpdatePasswordRequestDto {
 
     @NotBlank(message = "oldPassword는 필수값입니다.")
     @Size(max = 20,message = "oldPassword 20자 이내로 입력하세요.")
-    private final String oldPassword;
+    private String oldPassword;
     @NotBlank(message = "newPassword는 필수값입니다.")
     @Size(max = 20,message = "newPassword 20자 이내로 입력하세요.")
-    private final String newPassword;
+    private String newPassword;
 
-    public UpdatePasswordRequestDto(String oldPassword, String newPassword) {
-        this.oldPassword = oldPassword;
-        this.newPassword = newPassword;
-    }
 }

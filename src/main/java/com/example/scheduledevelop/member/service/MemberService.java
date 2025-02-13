@@ -92,7 +92,6 @@ public class MemberService {
         );
     }
 
-    //todo 리팩토링 하기
     /**
      * 회원 선택 수정(비밀번호 수정)
      * @param id 회원 id
@@ -100,6 +99,7 @@ public class MemberService {
      * @param newPassword 수정 후 비밀번호
      * @param loginMember 세션 로그인 멤버
      * getMemberByIdOrElseThrow : 회원 id로 회원 조회
+     * validatePassword : 비밀번호 일치여부 확인
      */
     @Transactional
     public void updatePassword(Long id, String oldPassword, String newPassword, Member loginMember) {
@@ -108,17 +108,14 @@ public class MemberService {
         String DbPassword = member.getPassword();
         log.info("DbPassword={}", DbPassword);
 
-        if (!passwordEncoder.matches(oldPassword,DbPassword)){
-            throw new ApplicationException(ErrorMessageCode.UNAUTHORIZED,
-                    List.of(new ApiError(CustomErrorMessageCode.INVALID_PASSWORD.getStatus(),
-                            CustomErrorMessageCode.INVALID_PASSWORD.getMessage())));
-        }
+        validatePassword(oldPassword, DbPassword);
 
         String encryptPassword = passwordEncoder.encode(newPassword); //비밀번호 암호화
         log.info("encryptPassword={}", encryptPassword);
 
         member.updatePassword(encryptPassword);
     }
+
 
     /**
      * 회원 선택 삭제
@@ -149,7 +146,7 @@ public class MemberService {
     }
 
     /**
-     * 본인(작성자)만 본인(작성자) 검증 로직
+     * 본인(작성자) 검증 로직
      * @param id 회원 id
      * @param loginMember 세션 로그인 멤버
      * loginMember(로그인 정보)의 id와 DB에서 조회한 id 비교
@@ -163,5 +160,17 @@ public class MemberService {
         }
     }
 
-
+    /**
+     * 비밀번호 일치여부 확인
+     * @param oldPassword 수정전 비밀번호
+     * @param DbPassword DB에 저장된 비밀번호
+     * @exception ApplicationException 각각의 비밀번호가 불일치할 경우 401 예외처리(커스텀 예외처리 INVALID_PASSWORD)
+     */
+    private void validatePassword(String oldPassword, String DbPassword) {
+        if (!passwordEncoder.matches(oldPassword, DbPassword)){
+            throw new ApplicationException(ErrorMessageCode.UNAUTHORIZED,
+                    List.of(new ApiError(CustomErrorMessageCode.INVALID_PASSWORD.getStatus(),
+                            CustomErrorMessageCode.INVALID_PASSWORD.getMessage())));
+        }
+    }
 }

@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
 
     /**
      * ValidationException 예외처리 핸들러
-     * - Spring의 @Valid 또는 @Validated 어노테이션을 사용한 요청 데이터 검증에서 발생하는 예외를 처리
+     * - @Valid 어노테이션을 사용한 요청 데이터 검증에서 발생하는 예외를 처리
      * - 예: DTO의 필드 값이 유효성 검사(@NotBlank, @Size 등)를 통과하지 못한 경우 발생
      * @param ex MethodArgumentNotValidException 예외 객체 (검증 실패 정보 포함)
      * @return HTTP 400 BAD_REQUEST 응답과 함께 첫 번째 검증 실패 메시지를 반환
